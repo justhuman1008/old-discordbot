@@ -5,9 +5,6 @@ import os
 client = discord.Client()
 
 
-token = "NzgwMzY2MDczNjUxMjY1NTM2.X7uCig.LUqtSkbGvKu6mzMhWf-isOIo4Xc"
-
-
 @client.event
 async def on_ready():
 
