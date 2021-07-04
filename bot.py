@@ -22,7 +22,7 @@ async def on_ready():
     print("=========================")
 
 Status = cycle(['!help', 'Minecraft', '!help', '!help'])
-@tasks.loop(seconds=10) # 상태메시지 변경
+@tasks.loop(seconds=10) # 상태메시지 자동 변경
 async def change_status():
     await client.change_presence(activity=discord.Game(next(Status)))
 
@@ -33,14 +33,14 @@ def is_it_me(ctx):
 @commands.check(is_it_me)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
-    await ctx.send(embed=discord.Embed(title=f'Cog {extension} Loaded', description='Cogs Loaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0x909fd4))
+    await ctx.send(embed=discord.Embed(title=f'Cog {extension} Loaded', description='Cogs Loaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0xf8e71c))
     print(f'파일 {extension}이 Load됨 : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute))
 
 @client.command() # Cogs 수동 언로드
 @commands.check(is_it_me)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
-    await ctx.send(embed=discord.Embed(title=f'Cog {extension} UnLoaded', description='Cogs UnLoaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0x909fd4))
+    await ctx.send(embed=discord.Embed(title=f'Cog {extension} UnLoaded', description='Cogs UnLoaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0xf8e71c))
     print(f'파일 {extension}이 UnLoad됨 : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute))
 
 @client.command() # Cogs 수동 리로드
@@ -48,7 +48,7 @@ async def unload(ctx, extension):
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
-    await ctx.send(embed=discord.Embed(title=f'Cog {extension} ReLoaded', description='Cogs ReLoaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0x909fd4))
+    await ctx.send(embed=discord.Embed(title=f'Cog {extension} ReLoaded', description='Cogs ReLoaded : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute), color=0xf8e71c))
     print(f'파일 {extension}이 ReLoad됨 : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute))
 
 for filename in os.listdir('./cogs'): # Cogs 자동 로드(봇 작동시)
@@ -66,16 +66,19 @@ async def clear_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send('삭제할 수를 입력해주세요')
 
-
-
-@client.event # 서버에서 초대됨
+@client.event #서버에 초대됨
 async def on_guild_join(server):
     print(server,"서버에 초대받았습니다!")
     print ("서버에 참여한 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
+
 
 @client.event # 서버에서 추방됨
 async def on_guild_remove(server):
     print(server,"서버에서 추방되었습니다..")
     print ("서버에서 추방된 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
+
+
+
+
 
 client.run('token') 
