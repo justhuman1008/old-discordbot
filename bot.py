@@ -2,7 +2,7 @@ import discord #pip
 from discord.ext import commands, tasks
 import os # Cogs 로드용
 from datetime import datetime # 시간표시용
-from itertools import cycle
+from itertools import cycle # 주기 생성
 
 #https://discord.com/api/oauth2/authorize?client_id=857814380749651998&permissions=8&scope=bot
 #token = os.getenv("DISCORD_BOT_TOKEN")
@@ -28,10 +28,6 @@ async def change_status():
 
 def is_it_me(ctx): 
     return ctx.author.id == 512166620463104004
-
-@client.event # 오류 메시지 무시
-async def on_command_error(ctx, error):
-    pass
 
 @client.command() # Cogs 수동 로드
 @commands.check(is_it_me)
@@ -60,7 +56,7 @@ for filename in os.listdir('./cogs'): # Cogs 자동 로드(봇 작동시)
         client.load_extension(f'cogs.{filename[:-3]}')
         print(f'{filename[:-3]}가 정상적으로 로드되었습니다.')
 
-@client.command()
+@client.command() # 채팅청소
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount : int):
     await ctx.channel.purge(limit=amount)
@@ -72,14 +68,14 @@ async def clear_error(ctx, error):
 
 
 
-@client.event
+@client.event # 서버에서 초대됨
 async def on_guild_join(server):
     print(server,"서버에 초대받았습니다!")
     print ("서버에 참여한 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
 
-@client.event
+@client.event # 서버에서 추방됨
 async def on_guild_remove(server):
     print(server,"서버에서 추방되었습니다..")
     print ("서버에서 추방된 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
 
-client.run('ODU3ODE0MzgwNzQ5NjUxOTk4.YNVD5Q.3PxgWlPPNJfoKD-XtNK3WloBTVY')
+client.run('token') 
