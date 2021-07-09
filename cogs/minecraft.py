@@ -4,6 +4,7 @@ import asyncio
 from discord.ext import commands
 import json
 import bs4 #파싱용
+import aiohttp
 from bs4 import BeautifulSoup #pip install bs4 #실검파싱
 
 class minecraft(commands.Cog):
@@ -27,21 +28,16 @@ class minecraft(commands.Cog):
             exceptMojangAPI.add_field(name="­", value=f"Mojang API가 작동하고 있는지 확인해주세요.", inline=False)
             await ctx.send(embed=exceptMojangAPI)
 
-    @commands.command(aliases=['접률']) # 마인리스트 파싱
-    async def uuid(self, ctx,*,message):
-        url = f"https://minelist.kr/servers/{message}"
-        res = requests.get(url)
-        soup = BeautifulSoup(res.text, "html.parser")
-
-        connect = soup.find("div", attrs={"class":"col-md-6 col-sm-6"}).get_text().strip()
-
-        embed = discord.Embed(title="서버접속 현황", description="`"+connect+"`", color=0xffdc16)
-        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/777089714137595914/externalFile.png")
-        embed.set_footer(text="Information in Minelist")
-        await ctx.send(embed=embed)
-
-
-
+    @commands.command()
+    async def 접률(self, *, ctx):
+        res = requests.get('https://minelist.kr/servers/madesv.kr')
+        html = res.text
+        soup = BeautifulSoup(html, "html.parser")
+        try:
+            connect = soup.find("div", attrs={"class":"col-md-6 col-sm-6"}).get_text().strip()
+            await ctx.send(connect)
+        except:
+            await ctx.send("마인리스트 접속에 실패하였습니다")
 
 
 
