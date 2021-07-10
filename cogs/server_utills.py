@@ -1,5 +1,7 @@
 from discord.ext import commands
 import discord
+from discord.utils import get
+from discord.utils import *
 
 is_it_me = 512166620463104004
 
@@ -16,10 +18,6 @@ class server_utills(commands.Cog):
     @commands.command()
     async def guildinfo(self, ctx):
         current_guild: discord.Guild = ctx.guild
-        member_counts = {
-            "bot count": 0,
-            "human count": 0
-        }
         member_statuses = {
             "online": 0,
             "idle": 0,
@@ -59,7 +57,7 @@ class server_utills(commands.Cog):
         guild_info.add_field(name="­", value="­", inline=True)
         guild_info.add_field(name="유저", value=f"`인원 총합: {current_guild.member_count}\n온라인 유저: {member_statuses['online']}`", inline=True)
         guild_info.add_field(name="서버 보안 수준", value=f"`{safety_settings['verification level']}`", inline=True)
-        guild_info.add_field(name="­", value="­", inline=True)
+        guild_info.add_field(name = '부스트 레벨', value = f"`{current_guild.premium_tier}`", inline =True)
         guild_info.add_field(name="서버 생성 일자", value=f"`{current_guild.created_at}`", inline=True)
         guild_info.add_field(name="서버 위치", value=f"`{current_guild.region}`", inline=True)
         guild_info.set_thumbnail(url=current_guild.icon_url)
@@ -68,31 +66,32 @@ class server_utills(commands.Cog):
 
 
     @commands.command(aliases=['추방', '킥'])
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member:discord.User=None, reason =None):
         if reason == None:
             reason = "추방사유 미작성됨"
         if member == None:
             await ctx.send(embed=discord.Embed(title="추방할 유저를 멘션해주세요", description="!추방 {멘션}", color=0xf8e71c))
+            return
         await ctx.guild.kick(member, reason=reason)
         await ctx.channel.send(f"{member.mention}님을 추방하였습니다.\n사유 : {reason}")
 
 
-    
     @commands.command(aliases=['차단', '밴'])
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member:discord.User=None, reason =None):
         if reason == None:
             reason = "차단사유 미작성됨"
         if member == None:
             await ctx.send(embed=discord.Embed(title="추방할 유저를 멘션해주세요", description="!차단 {멘션}", color=0xf8e71c))
+            return
         await ctx.guild.ban(member, reason=reason)
         await ctx.channel.send(f"{member.mention}님을 차단하였습니다.\n사유 : {reason}")
 
 
 
     @commands.command(aliases=['차단해제', '언밴'])
-    @commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(administrator=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
@@ -105,7 +104,16 @@ class server_utills(commands.Cog):
                 await ctx.send(f'{user.mention}님을 차단해제하였습니다.')
                 return
 
-
+    @commands.command(aliases=['내정보'])
+    async def myinfo(self, ctx):
+        user_info = discord.Embed(title=ctx.author.name+"#"+ctx.author.discriminator, colour=0xffdc16)
+        user_info.add_field(name="별명", value="`"+ctx.author.display_name+"`", inline=True)
+        user_info.add_field(name="유저 ID", value="`"+str(ctx.author.id)+"`", inline=True)
+        user_info.add_field(name="역할", value="`"+str(ctx.author.top_role)+"`", inline=True)
+        user_info.add_field(name="계정 생성일", value="`"+str(ctx.author.created_at.strftime("%Y %B %d %a"))+"`", inline=True)
+        user_info.add_field(name="서버 참가일", value="`"+str(ctx.author.joined_at.strftime("%Y %B %d %a"))+"`", inline=True)
+        user_info.set_thumbnail(url=ctx.author.avatar_url)
+        await ctx.send(embed=user_info)
 
 def setup(client):
     client.add_cog(server_utills(client))

@@ -1,5 +1,6 @@
 import discord #pip
-from discord.ext import commands, tasks
+from discord.ext import commands
+from discord.ext import tasks
 import os # Cogs 로드용
 from datetime import datetime # 시간표시용
 from itertools import cycle # 주기 생성
@@ -10,6 +11,8 @@ from itertools import cycle # 주기 생성
 now = datetime.now()
 
 client = commands.Bot(command_prefix = '!')
+
+token = 'tok'
 
 @client.event # 봇 작동
 async def on_ready():
@@ -61,11 +64,6 @@ for filename in os.listdir('./cogs'): # Cogs 자동 로드(봇 작동시)
 async def clear(ctx, amount : int):
     await ctx.channel.purge(limit=amount)
 
-@clear.error
-async def clear_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send('삭제할 수를 입력해주세요')
-
 @client.event #서버에 초대됨
 async def on_guild_join(server):
     print(server,"서버에 초대받았습니다!")
@@ -78,7 +76,31 @@ async def on_guild_remove(server):
     print ("서버에서 추방된 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
 
 
+#client.remove_command("help") #도움말 삭제
+
+@client.event # 없는 명령어 감지 제거
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        return
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send(embed=discord.Embed(title='값을 입력해주세요.', description=f'', color=0xf8e71c))
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send(embed=discord.Embed(title='값이 잘못되었습니다.', description=f'', color=0xf8e71c))
+    elif isinstance(error, commands.MissingPermissions):
+        await ctx.send(embed=discord.Embed(title='권한이 부족합니다.', description=f'', color=0xf8e71c))
+    else:
+        embed = discord.Embed(title="오류!!", description="오류가 발생했습니다.", color=0xFF0000)
+        embed.add_field(name="상세", value=f"```{error}```")
+        await ctx.send(embed=embed)
 
 
 
-client.run('token') 
+
+
+
+client.run(token) 
