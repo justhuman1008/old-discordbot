@@ -11,11 +11,20 @@ class server_utills(commands.Cog):
         self.bot = client
         self.stopcodes = 0
 
+    @commands.command(aliases=['서버 관리', '서버관리'])
+    async def serverhelp(self, ctx):
+        embed = discord.Embed(title="서버 관리용 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+        embed.add_field(name=':small_blue_diamond:'+"!서버정보", value="서버에 대한 정보를 출력합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!추방 `{멘션}`", value="멘션한 유저를 추방합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!차단 `{멘션}`", value="`멘션한 유저를 차단합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!청소 `{수}`", value="{수}만큼 메시지를 삭제합니다.", inline=False)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
+        await ctx.send(embed = embed)
 
 
 
-
-    @commands.command()
+    @commands.command(aliases=['서버정보', '서버 정보'])
     async def guildinfo(self, ctx):
         current_guild: discord.Guild = ctx.guild
         member_statuses = {
@@ -93,6 +102,7 @@ class server_utills(commands.Cog):
     @commands.command(aliases=['차단해제', '언밴'])
     @commands.has_permissions(administrator=True)
     async def unban(self, ctx, *, member):
+
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
 

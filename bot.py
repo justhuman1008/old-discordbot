@@ -12,7 +12,6 @@ now = datetime.now()
 
 client = commands.Bot(command_prefix = '!')
 
-token = 'tok'
 
 @client.event # 봇 작동
 async def on_ready():
@@ -59,7 +58,7 @@ for filename in os.listdir('./cogs'): # Cogs 자동 로드(봇 작동시)
         client.load_extension(f'cogs.{filename[:-3]}')
         print(f'{filename[:-3]}가 정상적으로 로드되었습니다.')
 
-@client.command() # 채팅청소
+@client.command(aliases=['청소', '삭제', '지워']) # 채팅청소
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount : int):
     await ctx.channel.purge(limit=amount)
@@ -76,16 +75,9 @@ async def on_guild_remove(server):
     print ("서버에서 추방된 시간 : %s년 %s월 %s일 %s시 %s분" %(now.year, now.month, now.day, now.hour, now.minute))
 
 
-#client.remove_command("help") #도움말 삭제
-
-@client.event # 없는 명령어 감지 제거
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        return
-
 @client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
+async def on_command_error(ctx, error): # 오류처리
+    if isinstance(error, commands.CommandNotFound): #없는 명령어 감지 제거
         return
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(embed=discord.Embed(title='값을 입력해주세요.', description=f'', color=0xf8e71c))
@@ -98,9 +90,19 @@ async def on_command_error(ctx, error):
         embed.add_field(name="상세", value=f"```{error}```")
         await ctx.send(embed=embed)
 
+client.remove_command("help")
+
+@client.command(aliases=['Help', 'HELP', '도움', '도움말'])
+async def help(ctx):
+    embed = discord.Embed(title="그저 평범한 봇 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+    embed.add_field(name=':small_blue_diamond:'+"!서버관리", value="디스코드 서버 관리용 명령어", inline=False)
+    embed.add_field(name=':small_blue_diamond:'+"!마인크래프트", value="마인크래프트 관련 명령어", inline=False)
+    embed.add_field(name=':small_blue_diamond:'+"!하이픽셀", value="하이픽셀 서버 관련 명령어 ''준비중''", inline=False)
+    embed.add_field(name=':small_blue_diamond:'+"!놀이", value="놀이용 명령어", inline=False)
+    embed.add_field(name=':small_blue_diamond:'+"!봇", value="봇 관리용 명령어", inline=False)
+    embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+    await ctx.send(embed = embed)
 
 
 
-
-
-client.run(token) 
+client.run('token') 
