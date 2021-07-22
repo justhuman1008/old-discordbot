@@ -1,122 +1,69 @@
-import discord #pip
-from discord.ext import commands, tasks
-import asyncio
 import requests
+import discord
+from discord.ext import commands
+import asyncio
+from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
 import json
 import time
-from bs4 import BeautifulSoup
-
 
 class lol(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['티어'])
-    async def tear(self, ctx,*,message):
+    @commands.command()
+    async def 전적(self, ctx):
+        embed = discord.Embed(title="전적 검색 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+        embed.add_field(name=':small_blue_diamond:'+"!롤티어 `롤 닉네임`", value="롤 티어를 검색합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"준비중", value=".", inline=False)
+        await ctx.send(embed = embed)
 
 
-        Name = message
+    @commands.command(aliases=['롤티어'])
+    async def _tear(self, ctx,*,Name):    
 
-        try:
-            req = requests.get('http://www.op.gg/summoner/userName='+Name)
-            html = req.text
-            soup = BeautifulSoup(html, 'html.parser')
+            Final_Name = Name.replace(" ","+")
+            api_key = "RGAPI-2c129c98-02a7-4217-86fe-f4eeda4df004"
+            URL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+Final_Name #0.8초 소요
+            res = requests.get(URL, headers={"X-Riot-Token": api_key})
 
-            Champ = [0,1,2,3,4]
-            Champ_game = [0,1,2,3,4]
-            Champ_ratio = [0,1,2,3,4]
+            if res.status_code == 200:
+                #코드가 200일때
+                resobj = json.loads(res.text)
+                URL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/"+resobj["id"]
+                player_icon = str(resobj["profileIconId"])
+                player_id = str(resobj["id"])
+                res = requests.get(URL, headers={"X-Riot-Token": api_key})
+                rankinfo = json.loads(res.text) #list class
 
 
-            SoloRank = soup.find_all('div', {'class': 'TierRank'})
-            SoloRank2 = str(SoloRank[0])[str(SoloRank[0]).find('TierRank">') + 10:str(SoloRank[0]).find('</div>')]
+                if len(rankinfo) == 0:
+                    await ctx.send(embed=discord.Embed(title="소환사의 랭크 정보가 없습니다", description="­", color=0xf8e71c))
 
+                for i in rankinfo:
+                    if i["queueType"] == "RANKED_SOLO_5x5":
+                        rank = str(i["rank"])
+                        tier = str(i["tier"])
+                        leaguepoints = str(i["leaguePoints"])
+                        wins = str(i["wins"])
+                        losses = str(i["losses"])
+                        ratio = str(round(int(wins)*100/(int(wins)+int(losses)), 1))
 
-            Rank_Side = soup.find_all('div', {'class':'SideContent' })
-
-            for side in Rank_Side:
-                img = side.find('img')
-                img_src = 'https:'+img['src']
-            
-            if len(SoloRank2) > 35:
-                embed_default = discord.Embed(title="롤 전적검색", description="op.gg 를 활용한 전적 검색 봇입니다", color=0xd5d5d5)
-                embed_default.add_field(name="닉네임:  "+Name, value="Unranked", inline=False)
-                embed_default.set_thumbnail(url=img_src)
-                embed_default.set_footer(text='op.gg')
-                await ctx.send(embed=embed_default)
-
-            else:
-
-                # 2가 붙은 변수는 print 를 위한 str
-                # Embed 구성을 위한 내용 추출
-                SoloRank_LP = soup.find_all('span', {'class' : 'LeaguePoints'})
-                SoloRank_LP2 = str(SoloRank_LP[0])[str(SoloRank_LP[0]).find('">') + 3:str(SoloRank_LP[0]).find('</span>')]
-                SoloRank_wins = soup.find_all('span', {'class': 'wins'})
-                SoloRank_wins2 = str(SoloRank_wins[0])[str(SoloRank_wins[0]).find('">') + 2:str(SoloRank_wins[0]).find('</span>')]
-                SoloRank_losses = soup.find_all('span', {'class': 'losses'})
-                SoloRank_losses2 = str(SoloRank_losses[0])[str(SoloRank_losses[0]).find('">') + 2:str(SoloRank_losses[0]).find('</span>')]
-                SoloRank_winratio = soup.find_all('span', {'class': 'winratio'})
-                SoloRank_winratio2 = str(SoloRank_winratio[0])[str(SoloRank_winratio[0]).find('">') + 5:str(SoloRank_winratio[0]).find('</span>')]
-
-                # 주목할만한 챔피언 system
-                for a in range(0,5):
-                    Champion = soup.select('div.ChampionName')[a].text
-                    Champ[a] = Champion.strip()
-                    Champion_game = soup.select('div.Title')[a].text
-                    Champ_game[a] = Champion_game.replace(" Played", "")
-                    Champion_ratio = soup.select('div.WinRatio')[a].text
-                    Champ_ratio[a] = Champion_ratio.strip()
-
-                # 변수
-                ChampList = []  # 20판 이상의 챔피언 등록
-                Champ_ratio_Top = 0
-                Champ_game_Top = 0
-                Champ_index = 0
-
-                for a in range(0,5):
-                    if int(Champ_game[a]) > 20:
-                        ChampList.append(a)
+                        URL = "https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/"+player_id
+                        res = requests.get(URL, headers={"X-Riot-Token": api_key})
+                        player_mastery = json.loads(res.text) # player mastery : list class
+                        
                     
-                    if Champ[a] in ChampList: # 승률 높은 걸로 산출, 승률 같다면 판수 높은 걸로 산출
-                        if Champ_ratio_Top == 0 or Champ_ratio[a] > Champ_ratio_Top:
-                            Champ_ratio_Top = Champ_ratio[a]
-                            Champ_game_Top = Champ_game[a]
-                            Champ_index = a
-                        elif Champ_ratio[a] == Champ_ratio_Top:
-                            if Champ_game[a] > Champ_game_Top:
-                                Champ_ratio_Top = Champ_ratio[a]
-                                Champ_game_Top = Champ_game[a]
-                                Champ_index = a
-                            else:
-                                continue
-
-                        else:
-                            continue
-                    else:
-                        continue
-            
-                # Embed 메시지 구성
-
-                # 소환사 아이콘
-                Player_image = soup.find_all('img',{'class' : 'ProfileImage'})
-                Player_image = str(Player_image[0])[str(Player_image[0]).find('src="') + 5:str(Player_image[0]).find('"/>')]
-                Player_image = str("https:"+ Player_image)
-
-
-                embed = discord.Embed(title="", description="", color=0xd5d5d5)
-                embed.set_author(name=Name +"님의 전적 검색", url="http://www.op.gg/summoner/userName="+Name, icon_url=Player_image)
-                embed.add_field(name=SoloRank2+SoloRank_LP2, value= SoloRank_wins2 + "  " +SoloRank_losses2 + " | " +SoloRank_winratio2 , inline=True)
-                embed.add_field(name="주목할 만한 챔피언", value= Champ[Champ_index] +" "+ Champ_game[Champ_index] +"게임  "+ Champ_ratio[Champ_index], inline= False)
-                embed.set_thumbnail(url=img_src)
-                embed.set_footer(text='op.gg')
-
-
-                # 메시지 보내기
-                await ctx.send(embed=embed)
-
-        except:
-            await ctx.send('닉네임 똑바로')
+                        embed = discord.Embed(title="", description="", color=0xf8e71c)
+                        embed.set_author(name=Final_Name  +"님의 전적 검색", url="http://www.op.gg/summoner/userName="+Final_Name, icon_url="http://ddragon.leagueoflegends.com/cdn/10.25.1/img/profileicon/"+player_icon+".png")
+                        embed.add_field(name=tier+" "+rank+"   | "+leaguepoints+" LP", value="­", inline=False)
+                        embed.add_field(name="승률 : "+ratio+"%",value=wins+"승"+" "+losses +"패", inline= False)
+                        embed.set_thumbnail(url="http://z.fow.kr/img/emblem/"+tier.lower()+".png")
+                        await ctx.send(embed=embed)
+                        break
+            else:
+                await ctx.send(embed=discord.Embed(title="소환사가 존재하지 않습니다", description="­", color=0xf8e71c))
 
 
 def setup(client):

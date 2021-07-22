@@ -8,7 +8,7 @@ class ran_game(commands.Cog):
         self.client = client
 
     @commands.command(aliases=['놀이', '게임'])
-    async def rangame(self, ctx):
+    async def _rangame(self, ctx):
         embed = discord.Embed(title="놀이 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!주사위", value="정육면체 주사위를 굴립니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!숫자", value="1~100중 숫자 하나를 뽑습니다.", inline=False)
@@ -47,6 +47,9 @@ class ran_game(commands.Cog):
         embed.add_field(name=card, value="과연 뭐가 뽑혔을까..", inline=False)
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/780346351917465600/pcc.png")
         await ctx.send(embed=embed)
+
+
+
 
 
 def setup(client):

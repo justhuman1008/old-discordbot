@@ -12,20 +12,21 @@ class server_utills(commands.Cog):
         self.stopcodes = 0
 
     @commands.command(aliases=['서버 관리', '서버관리'])
-    async def serverhelp(self, ctx):
+    async def _serverhelp(self, ctx):
         embed = discord.Embed(title="서버 관리용 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!서버정보", value="서버에 대한 정보를 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!추방 `{멘션}`", value="멘션한 유저를 추방합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!차단 `{멘션}`", value="`멘션한 유저를 차단합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!청소 `{수}`", value="{수}만큼 메시지를 삭제합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!슬로우모드 `{N}`", value="{N}초 만큼 슬로우모드를 적용합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!청소 `{N}`", value="{N}만큼 메시지를 삭제합니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
         await ctx.send(embed = embed)
 
 
 
     @commands.command(aliases=['서버정보', '서버 정보'])
-    async def guildinfo(self, ctx):
+    async def _guildinfo(self, ctx):
         current_guild: discord.Guild = ctx.guild
         member_statuses = {
             "online": 0,
@@ -57,17 +58,20 @@ class server_utills(commands.Cog):
             safety_settings['verification level'] = "휴대폰 인증 필요"
 
         # Embed
+        roles = ctx.guild.roles
         guild_info = discord.Embed(title=f"{current_guild.name}", colour=0xffdc16)
         guild_info.add_field(name="서버 ID", value=f"`{current_guild.id}`", inline=True)
         guild_info.add_field(name="서버 주인", value=f"`{current_guild.owner}`", inline=True)
-        guild_info.add_field(name="­", value="­", inline=True)
-        guild_info.add_field(name="텍스트 채널 갯수", value=f"`{len(current_guild.text_channels)}개`", inline=True)
-        guild_info.add_field(name="음성 통화방 갯수", value=f"`{len(current_guild.voice_channels)}개`", inline=True)
-        guild_info.add_field(name="­", value="­", inline=True)
-        guild_info.add_field(name="유저", value=f"`인원 총합: {current_guild.member_count}\n온라인 유저: {member_statuses['online']}`", inline=True)
+        guild_info.add_field(name='서버 최고 역할', value=f'{roles[-1].mention}', inline=True)
+        guild_info.add_field(name="텍스트 채널 ", value=f"`{len(current_guild.text_channels)}개`", inline=True)
+        guild_info.add_field(name="음성 통화방 ", value=f"`{len(current_guild.voice_channels)}개`", inline=True)
+        guild_info.add_field(name="카테고리 ", value=f"`{str(len(ctx.guild.categories))}개`", inline=True)
+        guild_info.add_field(name="유저", value=f"`인원 총합: {current_guild.member_count}명\n온라인 유저: {member_statuses['online']}명`", inline=True)
+        guild_info.add_field(name='역할수', value="`"+str(len(ctx.guild.roles)) + '개`', inline=True)
+        guild_info.add_field(name="이모지 수", value =f'`{len(ctx.guild.emojis)}개`', inline=True)
         guild_info.add_field(name="서버 보안 수준", value=f"`{safety_settings['verification level']}`", inline=True)
-        guild_info.add_field(name = '부스트 레벨', value = f"`{current_guild.premium_tier}`", inline =True)
-        guild_info.add_field(name="서버 생성 일자", value=f"`{current_guild.created_at}`", inline=True)
+        guild_info.add_field(name ='부스트 레벨', value = f"`{current_guild.premium_tier}`", inline =True)
+        guild_info.add_field(name="서버 생성 일자", value=f'`{ctx.guild.created_at.strftime("%Y-%m-%d %I")}`', inline=True)
         guild_info.add_field(name="서버 위치", value=f"`{current_guild.region}`", inline=True)
         guild_info.set_thumbnail(url=current_guild.icon_url)
         await ctx.send(embed=guild_info)
@@ -83,7 +87,7 @@ class server_utills(commands.Cog):
             await ctx.send(embed=discord.Embed(title="추방할 유저를 멘션해주세요", description="!추방 {멘션}", color=0xf8e71c))
             return
         await ctx.guild.kick(member, reason=reason)
-        await ctx.channel.send(f"{member.mention}님을 추방하였습니다.\n사유 : {reason}")
+        await ctx.channel.send(f"> {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
 
 
     @commands.command(aliases=['차단', '밴'])
@@ -95,7 +99,7 @@ class server_utills(commands.Cog):
             await ctx.send(embed=discord.Embed(title="추방할 유저를 멘션해주세요", description="!차단 {멘션}", color=0xf8e71c))
             return
         await ctx.guild.ban(member, reason=reason)
-        await ctx.channel.send(f"{member.mention}님을 차단하였습니다.\n사유 : {reason}")
+        await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
 
 
 
@@ -111,11 +115,11 @@ class server_utills(commands.Cog):
 
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
-                await ctx.send(f'{user.mention}님을 차단해제하였습니다.')
+                await ctx.send(f'> {user.mention}님을 차단해제하였습니다.')
                 return
 
     @commands.command(aliases=['내정보'])
-    async def myinfo(self, ctx):
+    async def _myinfo(self, ctx):
         user_info = discord.Embed(title=ctx.author.name+"#"+ctx.author.discriminator, colour=0xffdc16)
         user_info.add_field(name="별명", value="`"+ctx.author.display_name+"`", inline=True)
         user_info.add_field(name="유저 ID", value="`"+str(ctx.author.id)+"`", inline=True)
@@ -124,6 +128,28 @@ class server_utills(commands.Cog):
         user_info.add_field(name="서버 참가일", value="`"+str(ctx.author.joined_at.strftime("%Y %B %d %a"))+"`", inline=True)
         user_info.set_thumbnail(url=ctx.author.avatar_url)
         await ctx.send(embed=user_info)
+
+
+    @commands.command(aliases=['슬로우', '슬로우모드'])
+    @commands.has_permissions(manage_channels=True)
+    async def _slowmode(self, ctx, num: int, chan: discord.TextChannel = None):
+        if chan is None:
+            chan = ctx.message.channel
+        if num < 0:
+            await ctx.send(embed=discord.Embed(title="0보다 큰 수를 입력해주세요.", color=0xf8e71c))
+            return
+
+        await chan.edit(slowmode_delay=num)
+        if num == 0:
+            await ctx.send(embed=discord.Embed(title=':clock1:'+"슬로우모드가 해제되었습니다.", color=0xf8e71c))
+            return
+        await ctx.send(f"> {chan.mention}에 {num}초 슬로우모드를 걸었어요!")
+        await ctx.send(embed=discord.Embed(title=':clock1:'+f"이 채널에 {num}초 슬로우모드가 적용되었습니다.", color=0xf8e71c))
+
+
+
+
+
 
 def setup(client):
     client.add_cog(server_utills(client))

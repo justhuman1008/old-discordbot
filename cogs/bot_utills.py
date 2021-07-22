@@ -12,11 +12,11 @@ class bot_utills(commands.Cog):
     # Commands
 
     @commands.command(aliases=['봇'])
-    async def bothelp(self, ctx):
+    async def _bothelp(self, ctx):
         embed = discord.Embed(title="봇 관련 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!테스트", value="봇 테스트용 명령어를 출력합니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/780341733128011816/lego.png')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed = embed)
 
     @commands.command()
@@ -32,7 +32,7 @@ class bot_utills(commands.Cog):
                 await ctx.send(embed = embed)
 
     @commands.command(aliases=['정보'])
-    async def botinfo(self, ctx):
+    async def _botinfo(self, ctx):
         embed = discord.Embed(title="그저 평범한 봇", description="­", color=0xffdc16)
         embed.add_field(name="핑", value=f'`{round(self.client.latency * 1000)}ms`', inline=True)
         embed.add_field(name='봇 접두사', value='`!{명령어}`', inline=True)
