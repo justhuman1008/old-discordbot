@@ -13,6 +13,8 @@ now = datetime.now()
 client = commands.Bot(command_prefix = '!')
 
 
+
+
 @client.event # 봇 작동
 async def on_ready():
     change_status.start()
@@ -97,14 +99,37 @@ async def on_guild_remove(server):
 async def help(ctx):
     embed = discord.Embed(title="그저 평범한 봇 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
     embed.add_field(name=':small_blue_diamond:'+"!서버관리", value="디스코드 서버 관리용 명령어", inline=False)
+    embed.add_field(name=':small_blue_diamond:'+"!검색", value="검색 명령어 모음", inline=False)
     embed.add_field(name=':small_blue_diamond:'+"!마인크래프트", value="마인크래프트 관련 명령어", inline=False)
-    embed.add_field(name=':small_blue_diamond:'+"!하이픽셀", value="하이픽셀 서버 관련 명령어 ''준비중''", inline=False)
     embed.add_field(name=':small_blue_diamond:'+"!놀이", value="놀이용 명령어", inline=False)
     embed.add_field(name=':small_blue_diamond:'+"!봇", value="봇 관리용 명령어", inline=False)
     embed.add_field(name=':small_blue_diamond:'+"!전적", value="게임 전적 검색 도움말", inline=False)
+    embed.add_field(name='🔍', value="모든 명령어를 확인하려면 `!명령어`", inline=False)
     embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
     await ctx.send(embed = embed)
 
+@client.command(aliases=['명령어'])
+async def _commands(ctx):
+    morembed = discord.Embed(title="그저 평범한 봇 모든 명령어 보기", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+    morembed.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!하이픽셀`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"놀이", value="`!주사위` `!숫자` `!따라하기`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"봇", value="`!정보` `!테스트`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"전적", value="`!롤전적`", inline=False)
+    morembed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+    await ctx.send(embed = morembed)
 
+
+
+#    await msg.add_reaction("🔍")
+#@client.event
+#async def on_reaction_add(reaction, user):
+#    if reaction.message.author.bot:
+#        if user.bot == 1: #봇이면 패스
+#            return None
+#        if str(reaction.emoji) == "🔍":
+#            await reaction.message.channel.send(embed=morembed)
+#            await reaction.remove(user)
 
 client.run('token') 

@@ -13,7 +13,7 @@ class server_utills(commands.Cog):
 
     @commands.command(aliases=['서버 관리', '서버관리'])
     async def _serverhelp(self, ctx):
-        embed = discord.Embed(title="서버 관리용 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+        embed = discord.Embed(title="서버 관리용 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!서버정보", value="서버에 대한 정보를 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!추방 `{멘션}`", value="멘션한 유저를 추방합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!차단 `{멘션}`", value="`멘션한 유저를 차단합니다.", inline=False)
@@ -141,10 +141,9 @@ class server_utills(commands.Cog):
 
         await chan.edit(slowmode_delay=num)
         if num == 0:
-            await ctx.send(embed=discord.Embed(title=':clock1:'+"슬로우모드가 해제되었습니다.", color=0xf8e71c))
+            await ctx.send(embed=discord.Embed(title=':clock1:'+" 슬로우모드가 해제되었습니다.", color=0xf8e71c))
             return
-        await ctx.send(f"> {chan.mention}에 {num}초 슬로우모드를 걸었어요!")
-        await ctx.send(embed=discord.Embed(title=':clock1:'+f"이 채널에 {num}초 슬로우모드가 적용되었습니다.", color=0xf8e71c))
+        await ctx.send(embed=discord.Embed(title=':clock1:'+f" 이 채널에 {num}초 슬로우모드가 적용되었습니다.", color=0xf8e71c))
 
 
 

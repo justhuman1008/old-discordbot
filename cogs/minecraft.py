@@ -14,9 +14,10 @@ class minecraft(commands.Cog):
 
     @commands.command(aliases=['마크', '마인크래프트'])
     async def minecraft(self, ctx):
-        embed = discord.Embed(title="마인크래프트 관련 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+        embed = discord.Embed(title="마인크래프트 관련 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!UUID `닉네임`", value="유저의 마인크래프트 UUID를 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!스킨 `닉네임`", value="유저의 스킨을 불러옵니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!하이픽셀", value="`준비중`", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/786832203404935168/de2b606ddf81e1e1.png')
         await ctx.send(embed = embed)
 

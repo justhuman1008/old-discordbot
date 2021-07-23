@@ -13,9 +13,17 @@ class bot_utills(commands.Cog):
 
     @commands.command(aliases=['봇'])
     async def _bothelp(self, ctx):
-        embed = discord.Embed(title="봇 관련 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+        embed = discord.Embed(title="봇 관련 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!테스트", value="봇 테스트용 명령어를 출력합니다.", inline=False)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+        await ctx.send(embed = embed)
+
+    @commands.command(aliases=['테스트'])
+    async def _bottest(self, ctx):
+        embed = discord.Embed(title="봇 테스트용 명령어", description="­", color=0xffdc16)
+        embed.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"-", value="로드 실패", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed = embed)
 
