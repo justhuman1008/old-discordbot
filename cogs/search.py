@@ -35,10 +35,26 @@ class search(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867992533509210152/pngegg.png')
         await ctx.send(embed = embed)
 
+    @commands.command(aliases=['구글'])
+    async def _google(self, ctx, search):
+        url = 'https://www.google.com/search?q='+search
+
+        embed = discord.Embed(title="구글 검색", description=f"[{search} - Google 검색]({url})", color=0xffdc16)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/782799810905767966/google-logos-2018-5.png')
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['네이버'])
+    async def _naver(self, ctx, search):
+        url = 'https://search.naver.com/search.naver?query='+search
+
+        embed = discord.Embed(title="네이버 검색", description=f"[{search} : 네이버 통합 검색]({url})", color=0xffdc16)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777091660865339402/nalogo.png')
+        await ctx.send(embed=embed)
+
     @commands.command(aliases=['인벤뉴스'])
     async def _inven(self, ctx):
         """인벤의 주요뉴스를 보여줍니다"""
-        embed = discord.Embed(title="인벤 주요뉴스", color=0xffdc16)
+        embed = discord.Embed(title="인벤 주요뉴스",description="[인벤 뉴스 바로가기](http://www.inven.co.kr/webzine/news/?hotnews=1)", color=0xffdc16)
         targetSite = 'http://www.inven.co.kr/webzine/news/?hotnews=1'
 
         header = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
@@ -50,7 +66,8 @@ class search(commands.Cog):
         for i in range(5):
             artist = artists[i].text.strip()
             title = titles[i].text.strip()
-            embed.add_field(name="{0:3d} {1}".format(i + 1, artist), value='{0}'.format(title), inline=False)
+            embed.add_field(name="{0:3d}. {1}".format(i + 1, artist), value='{0}'.format(title), inline=False)
+            embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/869039284731133972/3b429bed8d202ca5.png')
         await ctx.send(embed=embed)
 
 

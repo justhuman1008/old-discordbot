@@ -114,7 +114,7 @@ async def _commands(ctx):
     morembed.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!하이픽셀`", inline=False)
-    morembed.add_field(name=':small_blue_diamond:'+"놀이", value="`!주사위` `!숫자` `!따라하기`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"봇", value="`!정보` `!테스트`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"전적", value="`!롤전적`", inline=False)
     morembed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
@@ -132,4 +132,4 @@ async def _commands(ctx):
 #            await reaction.message.channel.send(embed=morembed)
 #            await reaction.remove(user)
 
-client.run('token') 
+client.run('-') 
