@@ -12,7 +12,8 @@ now = datetime.now()
 
 client = commands.Bot(command_prefix = '!')
 
-
+def is_it_me(ctx): #관리자 계정 확인(나)
+    return ctx.author.id == 51216662046310400
 
 
 @client.event # 봇 작동
@@ -30,8 +31,6 @@ Status = cycle(['!help', 'Minecraft', '!help', '!help'])
 async def change_status():
     await client.change_presence(activity=discord.Game(next(Status)))
 
-def is_it_me(ctx): 
-    return ctx.author.id == 512166620463104004
 
 @client.command() # Cogs 수동 로드
 @commands.check(is_it_me)
@@ -111,8 +110,8 @@ async def help(ctx):
 @client.command(aliases=['명령어'])
 async def _commands(ctx):
     morembed = discord.Embed(title="그저 평범한 봇 모든 명령어 보기", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    morembed.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소`", inline=False)
-    morembed.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!채널생성`", inline=False)
+    morembed.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!하이픽셀`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자`", inline=False)
     morembed.add_field(name=':small_blue_diamond:'+"봇", value="`!정보` `!테스트` `!ping` `!참가` `!나가`", inline=False)

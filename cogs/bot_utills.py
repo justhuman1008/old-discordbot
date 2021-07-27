@@ -2,6 +2,9 @@ import discord #pip
 from discord.ext import commands
 import asyncio
 
+def is_it_me(ctx): #관리자 계정 확인(나)
+    return ctx.author.id == 512166620463104004
+
 class bot_utills(commands.Cog):
 
     def __init__(self, client):
@@ -20,10 +23,12 @@ class bot_utills(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command(aliases=['테스트'])
+    @commands.check(is_it_me)
     async def _bottest(self, ctx):
-        embed = discord.Embed(title="봇 테스트용 명령어", description="­", color=0xffdc16)
+        embed = discord.Embed(title="봇 테스트용 명령어", description="`이 명령어들은 사용이 불가능하거나 정상적으로 작동하지 않습니다.`", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!참가", value="음성 채널에 참가합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!나가", value="음성 채널에서 나갑니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed = embed)
 

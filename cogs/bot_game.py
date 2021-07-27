@@ -53,8 +53,12 @@ class bot_game(commands.Cog):
 
     @commands.command(aliases=['따라하기', '따라해'])
     async def _repeat(self, ctx, *, content):
-        msg = await ctx.send(f"{content}")
-        await msg.add_reaction("💬")
+        if "@everyone" in content or "@here" in content:
+            embed = discord.Embed(title="`@everyone`이나 `@here`이 포함된 채팅은 따라하지 않아요.",color=0xffdc16)
+            await ctx.channel.send(embed=embed)
+        else:
+            msg = await ctx.send(f"{content}")
+            await msg.add_reaction("💬")
 
     @commands.command(aliases=['소수'])
     async def _isprime(self, ctx, num: int):

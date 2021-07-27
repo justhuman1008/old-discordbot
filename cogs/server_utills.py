@@ -20,6 +20,7 @@ class server_utills(commands.Cog):
         embed.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!슬로우모드 `{N}`", value="{N}초 만큼 슬로우모드를 적용합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!청소 `{N}`", value="{N}만큼 메시지를 삭제합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
         await ctx.send(embed = embed)
 
@@ -102,6 +103,12 @@ class server_utills(commands.Cog):
         await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
 
 
+    @commands.command(aliases=['채널', '채널생성'])
+    @commands.has_permissions(manage_channels=True)
+    async def _mchle(self, ctx, channel):
+        await ctx.guild.create_text_channel(channel)
+        await ctx.send(embed=discord.Embed(title="`"+channel+"` 채널을 생성하였습니다.", color=0xf8e71c))
+        return
 
     @commands.command(aliases=['차단해제', '언밴'])
     @commands.has_permissions(administrator=True)
