@@ -13,7 +13,7 @@ class hy(commands.Cog):
         self.client = client
 
     @commands.command(aliases=['하픽', '하이픽셀'])
-    async def _hyp(self, ctx):
+    async def _hyhelp(self, ctx):
         embed = discord.Embed(title="해당 명령어는 준비중입니다.", description="`준비중`", color=0xffdc16)
         await ctx.send(embed = embed)
 

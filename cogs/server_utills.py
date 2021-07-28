@@ -20,7 +20,11 @@ class server_utills(commands.Cog):
         embed.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!슬로우모드 `{N}`", value="{N}초 만큼 슬로우모드를 적용합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!청소 `{N}`", value="{N}만큼 메시지를 삭제합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!초대링크 `{N}`", value="서버 초대링크({N}회 제한)를 생성합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!음성채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!카테고리생성 `{역할명}`", value="{카테고리명} 카테고리를 생성합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!역할생성 `{역할명}`", value="{역할명} 역할을 생성합니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
         await ctx.send(embed = embed)
 
@@ -79,7 +83,7 @@ class server_utills(commands.Cog):
 
 
 
-    @commands.command(aliases=['추방', '킥'])
+    @commands.command(aliases=['추방', '킥'],usage="!추방 `{멘션}`")
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member:discord.User=None, reason =None):
         if reason == None:
@@ -91,7 +95,7 @@ class server_utills(commands.Cog):
         await ctx.channel.send(f"> {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
 
 
-    @commands.command(aliases=['차단', '밴'])
+    @commands.command(aliases=['차단', '밴'],usage="!차단 `{멘션}`")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member:discord.User=None, reason =None):
         if reason == None:
@@ -102,15 +106,7 @@ class server_utills(commands.Cog):
         await ctx.guild.ban(member, reason=reason)
         await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
 
-
-    @commands.command(aliases=['채널', '채널생성'])
-    @commands.has_permissions(manage_channels=True)
-    async def _mchle(self, ctx, channel):
-        await ctx.guild.create_text_channel(channel)
-        await ctx.send(embed=discord.Embed(title="`"+channel+"` 채널을 생성하였습니다.", color=0xf8e71c))
-        return
-
-    @commands.command(aliases=['차단해제', '언밴'])
+    @commands.command(aliases=['차단해제', '언밴'],usage="!차단해제 `{닉네임#태그}`")
     @commands.has_permissions(administrator=True)
     async def unban(self, ctx, *, member):
 
@@ -136,6 +132,18 @@ class server_utills(commands.Cog):
         user_info.set_thumbnail(url=ctx.author.avatar_url)
         await ctx.send(embed=user_info)
 
+    @commands.command(aliases=['역할추가', '역할생성'])
+    @commands.has_permissions(manage_roles=True) # Check if the user executing the command can manage roles
+    async def _create_role(self, ctx, role):
+	    await ctx.guild.create_role(name=role,colour=discord.Colour(0xf8e71c))
+	    await ctx.send(embed=discord.Embed(title=f"역할 `{role}`이(가) 생성되었습니다.", color=0xf8e71c))
+
+    @commands.command(aliases=['초대링크', '서버초대'],pass_context=True)
+    @commands.has_permissions(create_instant_invite=True)
+    async def _create_invite(self, ctx, uses=10):
+        invitelink = await ctx.channel.create_invite(max_uses=uses, unique=True)
+        await ctx.send(f'> **{ctx.guild}** 서버의 초대링크를 생성하였습니다(`{uses}회 제한`)\n> {invitelink}')
+
 
     @commands.command(aliases=['슬로우', '슬로우모드'])
     @commands.has_permissions(manage_channels=True)
@@ -152,7 +160,23 @@ class server_utills(commands.Cog):
             return
         await ctx.send(embed=discord.Embed(title=':clock1:'+f" 이 채널에 {num}초 슬로우모드가 적용되었습니다.", color=0xf8e71c))
 
+    @commands.command(aliases=['채널생성','채팅채널생성'],usage="!채널생성 `{채널명}`")
+    @commands.has_permissions(manage_channels=True)
+    async def _mchle(self, ctx, channel):
+        await ctx.guild.create_text_channel(channel)
+        await ctx.send(embed=discord.Embed(title="`"+channel+"` 채널을 생성하였습니다.", color=0xf8e71c))
+        return
 
+    @commands.command(aliases=['음성채널생성', '통화방생성'],usage="!음성채널생성 `{채널명}`")
+    @commands.has_permissions(manage_channels=True)
+    async def _mVchle(self, ctx, channel):
+        await ctx.guild.create_voice_channel(channel)
+        await ctx.send(embed=discord.Embed(title="`"+channel+"` 채널을 생성하였습니다.", color=0xf8e71c))
+        return
+
+    @commands.command(aliases=['카테고리생성'],usage="!카테고리생성 `{카테고리명}`")
+    async def create_category(self, ctx, name):
+        await ctx.guild.create_category(name)
 
 
 

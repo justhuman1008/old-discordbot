@@ -46,8 +46,8 @@ class lol(commands.Cog): #2
         self.bot = bot #4
 
 
-    @commands.command(aliases=['티어'])
-    async def 전적(self, ctx):
+    @commands.command(aliases=['전적','티어'])
+    async def _tearhelp(self, ctx):
         embed = discord.Embed(title="전적 검색 도움말", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 검색합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"준비중", value="`준비중`", inline=False)
@@ -55,7 +55,7 @@ class lol(commands.Cog): #2
         await ctx.send(embed = embed)
 
 
-    @commands.command(aliases=['롤전적', '롤티어'])
+    @commands.command(aliases=['롤전적', '롤티어'],usage="!롤전적 `{닉네임}`")
     async def _lol(self, ctx, *, playerNickname):
         """롤전적을 보여줍니다."""
         checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))

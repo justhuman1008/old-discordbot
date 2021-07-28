@@ -2,6 +2,7 @@ import discord #pip
 from discord.ext import commands, tasks
 import random
 import math
+import asyncio
 
 class bot_game(commands.Cog):
 
@@ -9,7 +10,7 @@ class bot_game(commands.Cog):
         self.client = client
 
     @commands.command(aliases=['놀이', '게임'])
-    async def _rangame(self, ctx):
+    async def _gamehelp(self, ctx):
         embed = discord.Embed(title="놀이 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!따라하기 `{채팅}`", value="{채팅}을 따라합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!소수 `{N}`", value="{N}이 소수인지 확인합니다.", inline=False)
@@ -21,7 +22,6 @@ class bot_game(commands.Cog):
 
     @commands.command()
     async def 주사위(self, ctx):
-
         randomNum = random.randrange(1,7)
         if randomNum == 1:
             embed = discord.Embed(title="주사위를 던졌다", description=':game_die: '+ ':one:', color=0xffdc16)
@@ -51,7 +51,7 @@ class bot_game(commands.Cog):
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/780346351917465600/pcc.png")
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['따라하기', '따라해'])
+    @commands.command(aliases=['따라하기', '따라해'],usage="!따라하기 `{말}`")
     async def _repeat(self, ctx, *, content):
         if "@everyone" in content or "@here" in content:
             embed = discord.Embed(title="`@everyone`이나 `@here`이 포함된 채팅은 따라하지 않아요.",color=0xffdc16)
@@ -60,15 +60,17 @@ class bot_game(commands.Cog):
             msg = await ctx.send(f"{content}")
             await msg.add_reaction("💬")
 
-    @commands.command(aliases=['소수'])
+
+
+            
+
+    @commands.command(aliases=['소수'],usage="!소수 `{N}`")
     async def _isprime(self, ctx, num: int):
         isprime = discord.Embed(title=f"{num}은 소수입니다.", description=f'[{num}이 왜 소수인가요?](https://www.integers.co/questions-answers/is-{num}-a-prime-number.html)', color=0xffdc16)
         isprime.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/777101285525684234/mathmu.png")
 
         noprime = discord.Embed(title=f"{num}은 소수가 아닙니다.", description=f'[{num}이 왜 소수가 아닌가요?](https://www.integers.co/questions-answers/is-{num}-a-prime-number.html)', color=0xffdc16)
         noprime.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/777101285525684234/mathmu.png")
-
-
 
         if num == 0: # 0은 자동으로 소수아님 출력
             prime0 = discord.Embed(title=f'0은 소수가 아닙니다.', description=f"[소수 - 지식백과](https://terms.naver.com/entry.naver?docId=1113970&cid=40942&categoryId=32206)", color=0xf8e71c)

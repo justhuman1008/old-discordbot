@@ -18,17 +18,7 @@ class bot_utills(commands.Cog):
     async def _bothelp(self, ctx):
         embed = discord.Embed(title="봇 관련 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!테스트", value="봇 테스트용 명령어를 출력합니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
-        await ctx.send(embed = embed)
-
-    @commands.command(aliases=['테스트'])
-    @commands.check(is_it_me)
-    async def _bottest(self, ctx):
-        embed = discord.Embed(title="봇 테스트용 명령어", description="`이 명령어들은 사용이 불가능하거나 정상적으로 작동하지 않습니다.`", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!참가", value="음성 채널에 참가합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!나가", value="음성 채널에서 나갑니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed = embed)
 
@@ -43,6 +33,26 @@ class bot_utills(commands.Cog):
                 await asyncio.sleep(0)
                 embed = discord.Embed(title = ":ping_pong: 현재 봇의 핑", description = f"{round(self.client.latency * 1000, 3)}ms", colour = discord.Colour(0xffdc16))
                 await ctx.send(embed = embed)
+
+    @commands.command(name="반응체크")
+    async def get_reaction_and_react(self, ctx):
+        msg = await ctx.send("1, 2, 3 반응 중 2 반응을 달아주세요.")
+        reaction_list = ['1️⃣', '2️⃣', '3️⃣']
+        for r in reaction_list:
+            await msg.add_reaction(r)
+        def check(reaction, user):
+            return str(reaction) in reaction_list and user == ctx.author and reaction.message.id == msg.id
+        try:
+            reaction, _user = await self.client.wait_for("reaction_add", check=check, timeout=10.0)
+        except asyncio.TimeoutError:
+            await ctx.send("시간 초과되었습니다.")
+        else:
+            if str(reaction) == '2️⃣':
+                await ctx.send("성공!")
+            else:
+                await ctx.send("실패!")
+
+            pass
 
     @commands.command(aliases=['정보'])
     async def _botinfo(self, ctx):

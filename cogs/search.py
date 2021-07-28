@@ -34,7 +34,7 @@ class search(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867992533509210152/pngegg.png')
         await ctx.send(embed = embed)
 
-    @commands.command(aliases=['구글'])
+    @commands.command(aliases=['구글'],usage="!구글 `{내용}`")
     async def _google(self, ctx, search):
         url = 'https://www.google.com/search?q='+search
 
@@ -42,7 +42,7 @@ class search(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/782799810905767966/google-logos-2018-5.png')
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['네이버'])
+    @commands.command(aliases=['네이버'],usage="!네이버 `{내용}`")
     async def _naver(self, ctx, search):
         url = 'https://search.naver.com/search.naver?query='+search
 
@@ -90,46 +90,52 @@ class search(commands.Cog):
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995777719500881/1.png')
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['날씨'])
+    @commands.command(aliases=['날씨'],usage="!날씨 `{지역명}`")
     async def weather(self, ctx, location):
-        enc_location = urllib.parse.quote(location+'날씨')
-        hdr = {'User-Agent': 'Mozilla/5.0'}
-        url = 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=' + enc_location
-        req = Request(url, headers=hdr)
-        html = urllib.request.urlopen(req)
-        bsObj = BeautifulSoup(html, "html.parser")
-        todayBase = bsObj.find('div', {'class': 'main_info'})
+        try:
+            enc_location = urllib.parse.quote(location+'날씨')
+            hdr = {'User-Agent': 'Mozilla/5.0'}
+            url = 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=' + enc_location
+            req = Request(url, headers=hdr)
+            html = urllib.request.urlopen(req)
+            bsObj = BeautifulSoup(html, "html.parser")
+            todayBase = bsObj.find('div', {'class': 'main_info'})
 
-        todayTemp1 = todayBase.find('span', {'class': 'todaytemp'})
-        todayTemp = todayTemp1.text.strip()  # 온도
+            todayTemp1 = todayBase.find('span', {'class': 'todaytemp'})
+            todayTemp = todayTemp1.text.strip()  # 온도
 
-        todayValueBase = todayBase.find('ul', {'class': 'info_list'})
-        todayValue2 = todayValueBase.find('p', {'class': 'cast_txt'})
-        todayValue = todayValue2.text.strip()  # 밝음,어제보다 ?도 높거나 낮음을 나타내줌
+            todayValueBase = todayBase.find('ul', {'class': 'info_list'})
+            todayValue2 = todayValueBase.find('p', {'class': 'cast_txt'})
+            todayValue = todayValue2.text.strip()  # 밝음,어제보다 ?도 높거나 낮음을 나타내줌
 
-        todayFeelingTemp1 = todayValueBase.find('span', {'class': 'sensible'})
-        todayFeelingTemp = todayFeelingTemp1.text.strip()  # 체감온도
+            todayFeelingTemp1 = todayValueBase.find('span', {'class': 'sensible'})
+            todayFeelingTemp = todayFeelingTemp1.text.strip()  # 체감온도
 
-        todayMiseaMongi1 = bsObj.find('div', {'class': 'sub_info'})
-        todayMiseaMongi2 = todayMiseaMongi1.find('div', {'class': 'detail_box'})
-        todayMiseaMongi3 = todayMiseaMongi2.find('dd')
-        todayMiseaMongi = todayMiseaMongi3.text  # 미세먼지
+            todayMiseaMongi1 = bsObj.find('div', {'class': 'sub_info'})
+            todayMiseaMongi2 = todayMiseaMongi1.find('div', {'class': 'detail_box'})
+            todayMiseaMongi3 = todayMiseaMongi2.find('dd')
+            todayMiseaMongi = todayMiseaMongi3.text  # 미세먼지
 
-        tomorrowBase = bsObj.find('div', {'class': 'table_info weekly _weeklyWeather'})
-        tomorrowTemp1 = tomorrowBase.find('li', {'class': 'date_info'})
-        tomorrowTemp2 = tomorrowTemp1.find('dl')
-        tomorrowTemp3 = tomorrowTemp2.find('dd')
-        tomorrowTemp = tomorrowTemp3.text.strip()  # 오늘 오전,오후온도
+            tomorrowBase = bsObj.find('div', {'class': 'table_info weekly _weeklyWeather'})
+            tomorrowTemp1 = tomorrowBase.find('li', {'class': 'date_info'})
+            tomorrowTemp2 = tomorrowTemp1.find('dl')
+            tomorrowTemp3 = tomorrowTemp2.find('dd')
+            tomorrowTemp = tomorrowTemp3.text.strip()  # 오늘 오전,오후온도
 
 
-        embed = discord.Embed(title=location+ ' 날씨 정보', description='[네이버 날씨 바로가기](https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query='+enc_location+')', color=0xffdc16)
-        embed.add_field(name='현재온도', value=todayTemp+'˚', inline=False)  # 현재온도
-        embed.add_field(name='체감온도', value=todayFeelingTemp, inline=False)  # 체감온도
-        embed.add_field(name='현재상태', value=todayValue, inline=False)  # 밝음,어제보다 ?도 높거나 낮음을 나타내줌
-        embed.add_field(name='현재 미세먼지 상태', value=todayMiseaMongi, inline=False)  # 오늘 미세먼지
-        embed.add_field(name='오늘 오전/오후 날씨', value=tomorrowTemp, inline=False)  # 오늘날씨 # color=discord.Color.blue()
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995043473018950/pngwing.com.png')
-        await ctx.send(embed=embed)
+            embed = discord.Embed(title=location+ ' 날씨 정보', description='[네이버 날씨 바로가기](https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query='+enc_location+')', color=0xffdc16)
+            embed.add_field(name='현재온도', value=todayTemp+'˚', inline=False)  # 현재온도
+            embed.add_field(name='체감온도', value=todayFeelingTemp, inline=False)  # 체감온도
+            embed.add_field(name='현재상태', value=todayValue, inline=False)  # 밝음,어제보다 ?도 높거나 낮음을 나타내줌
+            embed.add_field(name='현재 미세먼지 상태', value=todayMiseaMongi, inline=False)  # 오늘 미세먼지
+            embed.add_field(name='오늘 오전/오후 날씨', value=tomorrowTemp, inline=False)  # 오늘날씨 # color=discord.Color.blue()
+            embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995043473018950/pngwing.com.png')
+            await ctx.send(embed=embed)
+        except:
+            embed = discord.Embed(title= "날씨 불러오기 실패", color=0xffdc16, description="아래의 내용을 확인해주세요")
+            embed.add_field(name="­", value=f"지역명이 `{location}`이(가) 맞는지 확인해주세요.", inline=False)
+            embed.add_field(name="­", value=f"[네이버 검색](https://www.naver.com/)이 작동하고 있는지 확인해주세요.", inline=False)
+            await ctx.send(embed=embed)
 
     @commands.command(aliases=['한강','한강수온'])
     async def 수온(self, ctx):
