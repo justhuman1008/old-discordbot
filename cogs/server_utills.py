@@ -136,7 +136,7 @@ class server_utills(commands.Cog):
     @commands.has_permissions(manage_roles=True) # Check if the user executing the command can manage roles
     async def _create_role(self, ctx, role):
 	    await ctx.guild.create_role(name=role,colour=discord.Colour(0xf8e71c))
-	    await ctx.send(embed=discord.Embed(title=f"역할 `{role}`이(가) 생성되었습니다.", color=0xf8e71c))
+	    await ctx.send(embed=discord.Embed(title=f"역할 `<@{role}>`이(가) 생성되었습니다.", color=0xf8e71c))
 
     @commands.command(aliases=['초대링크', '서버초대'],pass_context=True)
     @commands.has_permissions(create_instant_invite=True)

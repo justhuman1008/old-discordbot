@@ -9,23 +9,43 @@ import re
 import urllib
 import urllib.parse
 from urllib.request import urlopen, Request
+from urllib.request import URLError
+from urllib.request import HTTPError
 from urllib.parse import quote
 from urllib import parse
 import aiohttp
 import json
 from requests import get, post
+import xml.etree.ElementTree as ET
 from os import environ
+
 
 class search(commands.Cog): 
 
     def __init__(self, bot): 
         self.bot = bot 
 
+        def translate(source,target,text):
+             #네이버 api URL
+            URL = 'https://openapi.naver.com/v1/papago/n2mt'
+
+            #api 요청을 위한 헤더와 변수를 작성한다
+            headers = {'X-Naver-Client-Id': self.client_id,
+                    'X-Naver-Client-Secret': self.client_secret}
+            data = {'source': source, 'target': target, 'text': text}
+
+            #네이버 api에 요청을 보내고 받아온다
+            response = json.loads(requests.post(URL, headers=headers, data=data).text)
+
+            #번역된 결과를 리턴한다
+            return response["message"]["result"]["translatedText"]
+
     @commands.command(aliases=['검색', '인터넷'])
     async def _searchhelp(self, ctx):
         embed = discord.Embed(title="사이트 검색 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!구글 `{내용}`", value="{내용}을 구글에서 검색합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!네이버 `{내용}`", value="{내용}을 네이버에서 검색합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!코로나", value="국내 코로나-19 현황을 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!멜론차트", value="멜론차트를 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!날씨 `{지역}`", value="{지역}의 날씨를 검색합니다.", inline=False)
@@ -158,14 +178,12 @@ class search(commands.Cog):
                 soup = BeautifulSoup(await r.text(), "html.parser")
                 boardList = soup.select("ul.liveNum > li > span")
                 newstNews = soup.select(".m_news > ul > li > a")[0]
-            # async with session.get(
-            #     "http://ncov.mohw.go.kr/static/js/co_main_chart.js"
-            # ) as r:
-            #     r = await r.text()
-            #     rg = re.compile("/static/image/main_chart/week_\d*.png")
-            #     pic = rg.search(r).group()
+
 
         boardList = [x.text for x in boardList]
+        boardList = [item.replace("(누적)", "") for item in boardList]
+        boardList = [item.replace("전일대비", "") for item in boardList]
+
         embed = discord.Embed(title="코로나-19 국내 현황",description="[예방수칙](http://www.cdc.go.kr/gallery.es?mid=a20503020000&bid=0003)",color=0xD8EF56)
         embed.add_field(name="확진", value="\n".join(boardList[0:2]))
         embed.add_field(name="완치", value=" ".join(boardList[2:4]))
@@ -173,6 +191,8 @@ class search(commands.Cog):
         embed.add_field(name="코로나-19 최신 브리핑",value="[{}](http://ncov.mohw.go.kr{})".format(newstNews.text, newstNews.get("href")),inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/869449509359484991/af275a5f9980be9e.png')
         await ctx.send(embed=embed)
-    
+
+
+
 def setup(bot):
     bot.add_cog(search(bot))

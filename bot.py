@@ -6,6 +6,8 @@ from datetime import datetime # 시간표시용
 from itertools import cycle # 주기 생성
 import asyncio
 
+from discord.ext.commands.converter import TextChannelConverter
+
 #https://discord.com/api/oauth2/authorize?client_id=857814380749651998&permissions=8&scope=bot
 #token = os.getenv("DISCORD_BOT_TOKEN")
 
@@ -91,6 +93,7 @@ client.remove_command("help")
 @client.command(aliases=['청소', '삭제', '지워'],usage="!청소 {N}") # 채팅청소
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount : int):
+    await ctx.channel.purge(limit=1)
     await ctx.channel.purge(limit=amount)
 
 @client.event #서버에 초대됨
@@ -107,54 +110,51 @@ async def on_guild_remove(server):
 
 @client.command(aliases=['Help', 'HELP', '도움', '도움말'])
 async def help(ctx):
+    comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!롤전적` `!코로나` `!멜론차트` `!날씨` `!한강수온`\n`!인벤뉴스`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
+    comem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+
     helpem = discord.Embed(title="그저 평범한 봇 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
     helpem.add_field(name=':small_blue_diamond:'+"!서버관리", value="디스코드 서버 관리용 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!검색", value="검색 명령어 모음", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!마인크래프트", value="마인크래프트 관련 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!놀이", value="놀이용 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!봇", value="봇 관리용 명령어", inline=False)
-    helpem.add_field(name=':small_blue_diamond:'+"!롤전적 {닉네임}", value="{닉네임}의 롤 전적을 검색합니다.", inline=False)
-    helpem.add_field(name="­", value="모든 명령어를 확인하려면 🔍 클릭", inline=False)
     helpem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
 
-    commands = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    commands.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"전적", value="`!롤전적`", inline=False)
-    commands.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
-
+    helpem.add_field(name="­", value="모든 명령어를 확인하려면 `1분 이내` 🔍 클릭", inline=False)
     msg = await ctx.send(embed = helpem)
+    helpem.remove_field(6)
     reaction_list = ['🔍', '❌']#⬅️
     for r in reaction_list:
         await msg.add_reaction(r)
     def check(reaction, user):
         return str(reaction) in reaction_list and user == ctx.author and reaction.message.id == msg.id
     try:
-        reaction, _user = await client.wait_for("reaction_add", check=check)
+        reaction, _user = await client.wait_for("reaction_add", check=check, timeout=60.0)
     except asyncio.TimeoutError:
-        await ctx.send("시간 초과되었습니다.")
+        await msg.clear_reactions()
     else:
         if str(reaction) == '🔍':
-            await msg.edit(embed=commands)
             await msg.clear_reactions()
+            await msg.edit(embed=comem)
         if str(reaction) == '❌':
             await msg.clear_reactions()
         pass
 
 @client.command(aliases=['명령어'])
 async def alcommand(ctx):
-    commands = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    commands.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
-    commands.add_field(name=':small_blue_diamond:'+"전적", value="`!롤전적`", inline=False)
-    commands.add_field(name="­", value="도움말을 확인하려면 📎 클릭", inline=False)
-    commands.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+    comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!롤전적` `!코로나` `!멜론차트` `!날씨` `!한강수온`\n`!인벤뉴스`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
+    comem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
 
     helpem = discord.Embed(title="그저 평범한 봇 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
     helpem.add_field(name=':small_blue_diamond:'+"!서버관리", value="디스코드 서버 관리용 명령어", inline=False)
@@ -162,23 +162,24 @@ async def alcommand(ctx):
     helpem.add_field(name=':small_blue_diamond:'+"!마인크래프트", value="마인크래프트 관련 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!놀이", value="놀이용 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!봇", value="봇 관리용 명령어", inline=False)
-    helpem.add_field(name=':small_blue_diamond:'+"!롤전적 {닉네임}", value="{닉네임}의 롤 전적을 검색합니다.", inline=False)
     helpem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
 
-    msg = await ctx.send(embed = commands)
+    comem.add_field(name="­", value="도움말을 확인하려면 `1분 이내` 📎 클릭", inline=False)
+    msg = await ctx.send(embed = comem)
+    comem.remove_field(6)
     reaction_list = ['📎', '❌']
     for r in reaction_list:
         await msg.add_reaction(r)
     def check(reaction, user):
         return str(reaction) in reaction_list and user == ctx.author and reaction.message.id == msg.id
     try:
-        reaction, _user = await client.wait_for("reaction_add", check=check)
+        reaction, _user = await client.wait_for("reaction_add", check=check, timeout=60.0)
     except asyncio.TimeoutError:
-        await ctx.send("시간 초과되었습니다.")
+        await msg.clear_reactions()
     else:
         if str(reaction) == '📎':
-            await msg.edit(embed=helpem)
             await msg.clear_reactions()
+            await msg.edit(embed=helpem)
         if str(reaction) == '❌':
             await msg.clear_reactions()
         pass

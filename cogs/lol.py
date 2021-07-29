@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote
 import re # Regex for youtube link
 import warnings
+import requests
 
 opggsummonersearch = 'https://www.op.gg/summoner/userName='
 
@@ -46,16 +47,16 @@ class lol(commands.Cog): #2
         self.bot = bot #4
 
 
-    @commands.command(aliases=['전적','티어'])
-    async def _tearhelp(self, ctx):
-        embed = discord.Embed(title="전적 검색 도움말", description="­", color=0xffdc16)
-        embed.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 검색합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"준비중", value="`준비중`", inline=False)
-        embed.set_thumbnail(url='http://z.fow.kr/img/emblem/challenger.png')
-        await ctx.send(embed = embed)
+#    @commands.command(aliases=['전적','티어'])
+#    async def _tearhelp(self, ctx):
+#        embed = discord.Embed(title="전적 검색 도움말", description="­", color=0xffdc16)
+#        embed.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 검색합니다.", inline=False)
+#        embed.add_field(name=':small_blue_diamond:'+"준비중", value="`준비중`", inline=False)
+#        embed.set_thumbnail(url='http://z.fow.kr/img/emblem/challenger.png')
+#        await ctx.send(embed = embed)
 
 
-    @commands.command(aliases=['롤전적', '롤티어'],usage="!롤전적 `{닉네임}`")
+    @commands.command(aliases=['전적', '티어', '롤전적', '롤티어'],usage="!롤전적 `{닉네임}`")
     async def _lol(self, ctx, *, playerNickname):
         """롤전적을 보여줍니다."""
         checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))
@@ -125,7 +126,7 @@ class lol(commands.Cog): #2
                     embed = discord.Embed(title=playerNickname+"님의 전적검색", description=f'[op.gg 바로가기]({opggsummonersearch}{playerNickname})', color=0xffdc16)
                     embed.add_field(name="솔로 : Unranked", value="해당 랭크전을 플레이하지 않음", inline=False)
                     embed.add_field(name=FlexRankTier, value=FlexRankPointAndWinRatio, inline=False)
-                    embed.add_field(name="자주 사용한 챔피언 : " + mostUsedChampion,value="KDA : " + mostUsedChampionKDA + " / " + " 승률 : " + mostUsedChampionWinRate,inline=False)
+                    embed.add_field(name="주 챔피언 : " + mostUsedChampion,value="KDA : " + mostUsedChampionKDA + " / " + " 승률 : " + mostUsedChampionWinRate,inline=False)
                     embed.set_thumbnail(url='https:' + RankMedal[1]['src'])
                     await ctx.send(embed=embed)
 
@@ -139,14 +140,16 @@ class lol(commands.Cog): #2
                     mostUsedChampionKDA = mostUsedChampionKDA.text.split(':')[0]
                     mostUsedChampionWinRate = bs.find('div', {'class': "Played"})
                     mostUsedChampionWinRate = mostUsedChampionWinRate.div.text.strip()
-
+                    
+                    #솔로랭크 정리
+                    solorank_Point_and_winratio = [item.replace("Win Ratio", "승률") for item in solorank_Point_and_winratio]
                     SoloRankTier = '솔로' + ' : ' + solorank_Types_and_Tier_Info[1]
                     SoloRankPointAndWinRatio = solorank_Point_and_winratio[0] + " / " + solorank_Point_and_winratio[3]+'(' + solorank_Point_and_winratio[1] + " " + solorank_Point_and_winratio[2] + ')'
 
                     embed = discord.Embed(title=playerNickname+"님의 전적검색", description=f'[op.gg 바로가기]({opggsummonersearch}{playerNickname})', color=0xffdc16)
                     embed.add_field(name=SoloRankTier, value=SoloRankPointAndWinRatio, inline=False)
                     embed.add_field(name="자유 5:5 : Unranked", value="해당 랭크전을 플레이하지 않음", inline=False)
-                    embed.add_field(name="자주 사용한 챔피언 : " + mostUsedChampion, value="KDA : " + mostUsedChampionKDA + " / " + "승률 : " + mostUsedChampionWinRate,inline=False)
+                    embed.add_field(name="주 챔피언 : " + mostUsedChampion, value="KDA : " + mostUsedChampionKDA + " / " + "승률 : " + mostUsedChampionWinRate,inline=False)
                     embed.set_thumbnail(url='https:' + RankMedal[0]['src'])
                     await ctx.send(embed=embed)
 
@@ -156,6 +159,12 @@ class lol(commands.Cog): #2
                     # 더 높은 티어를 thumbnail에 안착
                     solorankmedal = RankMedal[0]['src'].split('/')[-1].split('?')[0].split('.')[0].split('_')
                     flexrankmedal = RankMedal[1]['src'].split('/')[-1].split('?')[0].split('.')[0].split('_')
+
+                    # 솔로랭크 정리
+                    solorank_Point_and_winratio = [item.replace("Win Ratio", "승률") for item in solorank_Point_and_winratio]
+
+                    flexrank_Types_and_Tier_Info = [item.replace("LP", " LP") for item in flexrank_Types_and_Tier_Info]
+                    flexrank_Types_and_Tier_Info = [item.replace("Win Rate", "승률") for item in flexrank_Types_and_Tier_Info]
 
                     # Make State
                     SoloRankTier = '솔로' + ' : ' + solorank_Types_and_Tier_Info[1]
@@ -175,7 +184,7 @@ class lol(commands.Cog): #2
                     embed = discord.Embed(title=playerNickname+"님의 전적검색", description=f'[op.gg 바로가기]({opggsummonersearch}{playerNickname})', color=0xffdc16)
                     embed.add_field(name=SoloRankTier, value=SoloRankPointAndWinRatio, inline=False)
                     embed.add_field(name=FlexRankTier, value=FlexRankPointAndWinRatio, inline=False)
-                    embed.add_field(name="자주 사용한 챔피언 : " + mostUsedChampion,value="KDA : " + mostUsedChampionKDA + " / " + " 승률 : " + mostUsedChampionWinRate,inline=False)
+                    embed.add_field(name="주 챔피언 : " + mostUsedChampion,value="KDA : " + mostUsedChampionKDA + " / " + " 승률 : " + mostUsedChampionWinRate,inline=False)
 
 
                     if cmpTier == 0:
@@ -201,6 +210,73 @@ class lol(commands.Cog): #2
                 embed.add_field(name="???", value="올바르지 않은 소환사 이름입니다.", inline=False)
                 await ctx.send(embed=embed)
 
+    
+ 
+ 
+    @commands.command(aliases=['스팀'])
+    async def steam(self, ctx, message):
+        nickname = message
+        requesturl = "https://steamcommunity.com/id/" + nickname
+        try:
+            if message.isdigit() == True:
+                await ctx.send('해당 코드는 유저코드입니다.')
+                requesturl = "https://steamcommunity.com/profiles/"+ nickname
+                return
+            html = requests.get(requesturl).text
+            username = html.split('"personaname":"')[1].split('"')[0]
+            embed = discord.Embed(title=username , url="https://steamcommunity.com/id/" + nickname + "?l=koreana", color=0x00aaaa)
+            try:
+                data=html.split("This profile is private.")[1]
+            except:
+                status = ""
+                is_Online = html.split('<div class="profile_in_game_header">')[1].split('</div>')[0]
+                if is_Online == "Currently Offline":
+                    status = "⚪ 오프라인"
+                elif is_Online == "Currently In-Game":
+                    status = "▶️ 게임 중"
+                    status = status + "(" + html.split('<div class="profile_in_game_name">')[1].split('</div>')[0] + ")"
+                elif is_Online == "Currently Online":
+                    status = "🟢 온라인"
+                else:
+                    status = is_Online
+                icon_url = html.split('<img src="')[5].split('">')[0]
+                embed.add_field(name="상태:", value=status, inline=True)
+                embed.set_thumbnail(url=icon_url)
+                try:
+                    since = html.split('since')[1].split('"')[0]
+                    embed.add_field(name="가입일:", value=since, inline=True)
+                except:
+                    dummy = 0
+                #embed.set_image(url=icon_url)
+                try:
+                    level = html.split('<span class="friendPlayerLevelNum">')[1].split('</span>')[0]
+                    embed.add_field(name="레벨:", value=level, inline=True)
+                    local_data = ""
+                    for i in range(3):
+                        cache_html1 = html.split('<div class="game_name">')[i+1].split('</div>')[0]
+                        game_name =  cache_html1.split('">')[1].split('</a>')[0]
+                        game_time = html.split('<div class="game_info_details">')[i+1].split('on record')[0].replace("hrs"," 시간")
+                        least_game = html.split('last played on')[i+1].split('</div>')[0]
+                        #game_time=""
+                        local_data = local_data + "**" + game_name + "**:" + game_time + "플레이(마지막 플레이:" + least_game + ")\n"
+                    embed.add_field(name="최근 플레이한 게임:", value=local_data, inline=False)
+                except:
+                    dummy = 0
+                await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(title="에러!",description="이 계정은 비공개 계정입니다.", color=0x00aaaa)
+                await ctx.send(embed=embed)
+        except:
+            try:
+                answer = html.split('<h3>')[1].split('</h3>')[0]
+                if answer == "The specified profile could not be found.":
+                    answer = "요청하신 계정을 찾을수 없습니다. 사용자 지정 URL을 설정하지 않았다면 유저코드를 입력해주세요"
+                embed = discord.Embed(title="에러!",description=answer, color=0x00aaaa)
+                await ctx.send(embed=embed)
+                
+            except:
+                embed = discord.Embed(title="에러!",description="알수없는 오류가 발생하였습니다.", color=0x00aaaa)
+                await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(lol(bot))  

@@ -3,3 +3,4 @@ asyncio
 requests
 bs4
 pyNaCl
+aiohttp
