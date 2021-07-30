@@ -177,6 +177,8 @@ class server_utills(commands.Cog):
     @commands.command(aliases=['카테고리생성'],usage="!카테고리생성 `{카테고리명}`")
     async def create_category(self, ctx, name):
         await ctx.guild.create_category(name)
+        await ctx.send(embed=discord.Embed(title="`"+name+"` 카테고리를 생성하였습니다.", color=0xf8e71c))
+        return
 
 
 

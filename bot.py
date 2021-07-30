@@ -112,7 +112,7 @@ async def on_guild_remove(server):
 async def help(ctx):
     comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
     comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
-    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!롤전적` `!코로나` `!멜론차트` `!날씨` `!한강수온`\n`!인벤뉴스`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적` `!스팀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
@@ -150,7 +150,7 @@ async def help(ctx):
 async def alcommand(ctx):
     comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
     comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
-    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!롤전적` `!코로나` `!멜론차트` `!날씨` `!한강수온`\n`!인벤뉴스`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적` `!스팀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"봇", value="`!도움말` `!정보` `!ping`", inline=False)
@@ -194,4 +194,4 @@ async def alcommand(ctx):
 #            await reaction.message.channel.send(embed=morembed)
 #            await reaction.remove(user)
 
-client.run('-') 
+client.run(token_KEY) 

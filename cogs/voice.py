@@ -10,11 +10,11 @@ class voice(commands.Cog):
 
     @commands.command(aliases=['음성'])
     async def _voicehelp(self, ctx):
-        embed = discord.Embed(title="마인크래프트 관련 명령어", description="­", color=0xffdc16)
+        embed = discord.Embed(title="음성 채널 관련 명령어", description="­", color=0xffdc16)
         embed.add_field(name=':small_blue_diamond:'+"!참가", value="유저가 참여중인 음성채널에 연결합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!나가", value="음성채널에서 나갑니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!음소거", value="봇의 마이크를 끕니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/786832203404935168/de2b606ddf81e1e1.png')
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/870547423196499968/3faa9d34cc341657.png')
         await ctx.send(embed = embed)
 
     @commands.command(aliases=['참가', '들어와', '참여'])
