@@ -94,7 +94,7 @@ client.remove_command("help")
 
 @client.command(aliases=['청소', '삭제', '지워'],usage="!청소 {N}") # 채팅청소
 @commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount : int):
+async def _clear(ctx, amount : int):
     await ctx.channel.purge(limit=1)
     await ctx.channel.purge(limit=amount)
 

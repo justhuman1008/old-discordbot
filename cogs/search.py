@@ -46,7 +46,7 @@ class search(commands.Cog):
         embed.add_field(name=':small_blue_diamond:'+"!구글 `{내용}`", value="{내용}을 구글에서 검색합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!네이버 `{내용}`", value="{내용}을 네이버에서 검색합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 불러옵니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!스팀 `{SteamID(17자리 숫자)} or {사용자 지정 URL}`", value="{닉네임}의 롤 전적을 불러옵니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!스팀 `{SteamID(17자리 숫자)} or {사용자 지정 URL}`", value="{-}의 스팀 프로필을 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!코로나", value="국내 코로나-19 현황을 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!멜론차트", value="멜론차트를 불러옵니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!날씨 `{지역}`", value="{지역}의 날씨를 검색합니다.", inline=False)

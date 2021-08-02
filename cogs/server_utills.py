@@ -23,7 +23,7 @@ class server_utills(commands.Cog):
         embed.add_field(name=':small_blue_diamond:'+"!초대링크 `{N}`", value="서버 초대링크({N}회 제한)를 생성합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!음성채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!카테고리생성 `{역할명}`", value="{카테고리명} 카테고리를 생성합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!카테고리생성 `{카테고리명}`", value="{카테고리명} 카테고리를 생성합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!역할생성 `{역할명}`", value="{역할명} 역할을 생성합니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
         await ctx.send(embed = embed)
