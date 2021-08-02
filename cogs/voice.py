@@ -51,5 +51,7 @@ class voice(commands.Cog):
         else:
             await ctx.send(embed=discord.Embed(title=f'당신은 음성채널에 연결되어 있지 않습니다.', description='음성채널에 참여한 유저만 `!음소거`를 사용할 수 있습니다.', color=0xf8e71c)) # 출력
 
+
+
 def setup(client):
     client.add_cog(voice(client))
