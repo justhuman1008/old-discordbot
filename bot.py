@@ -5,7 +5,6 @@ import os # Cogs 로드용
 from datetime import datetime # 시간표시용
 from itertools import cycle # 주기 생성
 import asyncio
-
 from discord.ext.commands.converter import TextChannelConverter
 
 #https://discord.com/api/oauth2/authorize?client_id=857814380749651998&permissions=8&scope=bot
@@ -76,15 +75,18 @@ async def on_command_error(ctx, error): # 오류처리
     if isinstance(error, commands.CommandNotFound): #없는 명령어 감지 제거
         return
     elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(embed=discord.Embed(title='값을 입력해주세요.', description=f'', color=0xf8e71c))
+        await ctx.send(embed=discord.Embed(title='명령어를 제대로 입력해주세요', color=0xf8e71c))
     elif isinstance(error, commands.BadArgument):
-        await ctx.send(embed=discord.Embed(title='값이 잘못되었습니다.', description=f'', color=0xf8e71c))
+        await ctx.send(embed=discord.Embed(title='명령어를 제대로 입력해주세요', color=0xf8e71c))
     elif isinstance(error, commands.MissingPermissions):
-        await ctx.send(embed=discord.Embed(title='권한이 부족합니다.', description=f'', color=0xf8e71c))
+        await ctx.send(embed=discord.Embed(title='{}님은 권한이 부족합니다.'.format(ctx.message.author), color=0xf8e71c))
     else:
+        admin = client.get_user(int(my_id))
         embed = discord.Embed(title="오류!!", description="오류가 발생했습니다.", color=0xFF0000)
         embed.add_field(name="상세", value=f"```{error}```")
-        await ctx.send(embed=embed)
+        await admin.send(embed=embed)
+
+
 
 client.remove_command("help")
 
@@ -111,7 +113,7 @@ async def on_guild_remove(server):
 @client.command(aliases=['Help', 'HELP', '도움', '도움말'])
 async def help(ctx):
     comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `!음성채널생성` `!카테고리생성`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적` `!스팀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
@@ -149,7 +151,7 @@ async def help(ctx):
 @client.command(aliases=['명령어'])
 async def alcommand(ctx):
     comem = discord.Embed(title="그저 평범한 봇 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `음성채널생성` `!카테고리생성`", inline=False)
+    comem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `!음성채널생성` `!카테고리생성`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적` `!스팀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!UUID` `!스킨` `!색코드` `!하이픽셀`", inline=False)
     comem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자` `!음성` `!참가` `!나가` `!음소거`", inline=False)
@@ -194,4 +196,4 @@ async def alcommand(ctx):
 #            await reaction.message.channel.send(embed=morembed)
 #            await reaction.remove(user)
 
-client.run(token_KEY) 
+client.run('-') 
