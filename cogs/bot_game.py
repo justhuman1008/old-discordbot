@@ -86,8 +86,9 @@ class bot_game(commands.Cog):
             return await ctx.send(embed=noprime)
         if num % 5 == 0: # 5의 약수는 자동으로 소수아님 출력
             return await ctx.send(embed=isprime)
-        if num > 1e+9:  # 소수 확인 제한(현재 10억)
+        if num >= 1000000001:  # 소수 확인 제한(현재 10억)
             await ctx.send(embed=discord.Embed(title=f'10억 이상의 수는 확인할 수 없습니다.', description=f'확인을 시도한 수 {num}', color=0xf8e71c))
+            return
         a = 3
         while a <= math.sqrt(num):
             if num % a == 0:
