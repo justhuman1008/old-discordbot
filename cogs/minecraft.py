@@ -87,7 +87,5 @@ class minecraft(commands.Cog):
 
 
 
-
-
 def setup(client):
     client.add_cog(minecraft(client))

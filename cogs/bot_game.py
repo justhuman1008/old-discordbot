@@ -62,8 +62,6 @@ class bot_game(commands.Cog):
 
 
 
-            
-
     @commands.command(aliases=['소수'],usage="!소수 `{N}`")
     async def _isprime(self, ctx, num: int):
         isprime = discord.Embed(title=f"{num}은 소수입니다.", description=f'[{num}이 왜 소수인가요?](https://www.integers.co/questions-answers/is-{num}-a-prime-number.html)', color=0xffdc16)
@@ -96,6 +94,8 @@ class bot_game(commands.Cog):
                 return await ctx.send(embed=noprime)#Composite. {0} mod {1} = 0.'.format(num, a)
             a = a + (2, 4)[a % 10 == 3]  # Skips 5s and even numbers
         return await ctx.send(embed=isprime)
+
+
 
 def setup(client):
     client.add_cog(bot_game(client))

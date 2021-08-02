@@ -196,4 +196,4 @@ async def alcommand(ctx):
 #            await reaction.message.channel.send(embed=morembed)
 #            await reaction.remove(user)
 
-client.run('-') 
+client.run('--') 

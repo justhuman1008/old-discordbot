@@ -70,5 +70,7 @@ class bot_utills(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed=embed)
 
+
+
 def setup(client):
     client.add_cog(bot_utills(client))

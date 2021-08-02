@@ -324,5 +324,6 @@ class state(commands.Cog): #2
                 embed = discord.Embed(title="에러!",description="알수 없는 오류가 발생하였습니다.", color=0xffdc16)
                 await ctx.send(embed=embed)
 
+
 def setup(bot):
     bot.add_cog(state(bot))  
