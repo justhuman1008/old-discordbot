@@ -131,7 +131,7 @@ async def help(ctx):
     helpem.add_field(name="­", value="모든 명령어를 확인하려면 `1분 이내` 🔍 클릭", inline=False)
     msg = await ctx.send(embed = helpem)
     helpem.remove_field(6)
-    reaction_list = ['🔍', '❌']#⬅️
+    reaction_list = ['🔍', '❌']
     for r in reaction_list:
         await msg.add_reaction(r)
     def check(reaction, user):
@@ -185,15 +185,5 @@ async def alcommand(ctx):
         if str(reaction) == '❌':
             await msg.clear_reactions()
         pass
-
-#    await msg.add_reaction("🔍")
-#@client.event
-#async def on_reaction_add(reaction, user):
-#    if reaction.message.author.bot:
-#        if user.bot == 1: #봇이면 패스
-#            return None
-#        if str(reaction.emoji) == "🔍":
-#            await reaction.message.channel.send(embed=morembed)
-#            await reaction.remove(user)
 
 client.run('--') 
