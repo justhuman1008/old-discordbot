@@ -2,6 +2,9 @@ from discord.ext import commands
 import discord
 from discord.utils import get
 from discord.utils import *
+from datetime import datetime # 시간표시용
+
+now = datetime.now()
 
 is_it_me = 512166620463104004
 
@@ -32,6 +35,7 @@ class server_utills(commands.Cog):
 
     @commands.command(aliases=['서버정보', '서버 정보'])
     async def _guildinfo(self, ctx):
+        print(f'디스코드 서버에 대한 정보를 불러옵니다.')
         current_guild: discord.Guild = ctx.guild
         member_statuses = {
             "online": 0,
@@ -39,6 +43,7 @@ class server_utills(commands.Cog):
             "dnd": 0,
             "offline/invisible": 0
         }
+
         safety_settings = {
             "2FA Setting": current_guild.mfa_level,
             "verification level": current_guild.verification_level
@@ -49,6 +54,7 @@ class server_utills(commands.Cog):
         for member in current_guild.members:
             if str(member.status) == "online":
                 member_statuses["online"] += 1
+        print(f'-온라인 유저수 확인 완료')
 
         # 보안 레벨
         if safety_settings['verification level'] == discord.VerificationLevel.none:
@@ -61,6 +67,7 @@ class server_utills(commands.Cog):
             safety_settings['verification level'] = "참여후 10분 대기 필요"
         elif safety_settings['verification level'] == discord.VerificationLevel.extreme or safety_settings['verification level'] == discord.VerificationLevel.double_table_flip:
             safety_settings['verification level'] = "휴대폰 인증 필요"
+        print(f'-서버의 보안 레벨 확인 완료')
 
         # Embed
         roles = ctx.guild.roles
@@ -80,6 +87,7 @@ class server_utills(commands.Cog):
         guild_info.add_field(name="서버 위치", value=f"`{current_guild.region}`", inline=True)
         guild_info.set_thumbnail(url=current_guild.icon_url)
         await ctx.send(embed=guild_info)
+        print(f'디스코드 서버 정보를 성공적으로 전송하였습니다.')
 
 
 
@@ -93,6 +101,7 @@ class server_utills(commands.Cog):
             return
         await ctx.guild.kick(member, reason=reason)
         await ctx.channel.send(f"> {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
+        print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
 
 
     @commands.command(aliases=['차단', '밴'],usage="!차단 `{멘션}`")
@@ -105,6 +114,7 @@ class server_utills(commands.Cog):
             return
         await ctx.guild.ban(member, reason=reason)
         await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
+        print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
 
     @commands.command(aliases=['차단해제', '언밴'],usage="!차단해제 `{닉네임#태그}`")
     @commands.has_permissions(administrator=True)
@@ -119,6 +129,7 @@ class server_utills(commands.Cog):
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
                 await ctx.send(f'> {user.mention}님을 차단해제하였습니다.')
+                print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 차단해제하였습니다.")
                 return
 
     @commands.command(aliases=['내정보'])
@@ -165,6 +176,7 @@ class server_utills(commands.Cog):
     async def _mchle(self, ctx, channel):
         await ctx.guild.create_text_channel(channel)
         await ctx.send(embed=discord.Embed(title="`"+channel+"` 채널을 생성하였습니다.", color=0xf8e71c))
+        await ctx.set_permissions('muted', overwrite=None)
         return
 
     @commands.command(aliases=['음성채널생성', '통화방생성'],usage="!음성채널생성 `{채널명}`")
