@@ -6,8 +6,8 @@ Ver: 1.0(2021-08-02)
 pip(내장 제외) : [requirements.txt](https://github.com/justhuman1008/Just_Bot/blob/main/requirements.txt)
 
 봇 도움말:  
-<img src="/image/help.PNG" alt ="Data" style="width: 700px;"/>  
-<img src="/image/commands.png" alt="Data" style="width: 700px;"/>
+<img src="/Image/help.png" alt ="Data" style="width: 700px;"/>  
+<img src="/Image/commands.png" alt="Data" style="width: 700px;"/>
 
 이 봇은 한국어만을 지원합니다.   
 These bots support only Korean.
