@@ -261,6 +261,7 @@ class state(commands.Cog): #2
             try:
                 answer = html.split('<h3>')[1].split('</h3>')[0]
                 if answer == "The specified profile could not be found.":
+                    answer = "요청하신 계정을 찾을수 없습니다. \n사용자 지정 URL을 설정하지 않았다면 유저코드를 입력해주세요."
                 embed = discord.Embed(title="에러!",description=answer, color=0xffdc16)
                 await ctx.send(embed=embed)
             except:
