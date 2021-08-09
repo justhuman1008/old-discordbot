@@ -1,6 +1,9 @@
 import discord #pip
 from discord.ext import commands
 import asyncio
+from datetime import datetime # 시간표시용
+
+now = datetime.now()
 
 def is_it_me(ctx): #관리자 계정 확인(나)
     return ctx.author.id == 512166620463104004
@@ -17,8 +20,12 @@ class bot_utills(commands.Cog):
     @commands.command(aliases=['봇'])
     async def _bothelp(self, ctx):
         embed = discord.Embed(title="봇 관련 명령어", description="­", color=0xffdc16)
+        embed.add_field(name=':small_blue_diamond:'+"!도움말", value="봇 도움말을 출력합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇 명령어 목록을 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
         embed.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!회원가입", value="회원가입을 진행합니다.", inline=False)
+        embed.add_field(name=':small_blue_diamond:'+"!탈퇴", value="회원탈퇴를 진행합니다.", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed = embed)
 
@@ -53,6 +60,12 @@ class bot_utills(commands.Cog):
                 await ctx.send("실패!")
 
             pass
+    @commands.command(aliases=['초대'])
+    async def _bothelp(self, ctx):
+        embed = discord.Embed(title="그저 평범한 봇 초대하기", description="", color=0xffdc16)
+        embed.add_field(name="­", value='[그저 평범한 봇 서버에 추가하기](https://discord.com/oauth2/authorize?client_id=857814380749651998&permissions=173144927479&scope=bot)', inline=True)
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+        await ctx.send(embed = embed)
 
     @commands.command(aliases=['정보'])
     async def _botinfo(self, ctx):
@@ -69,8 +82,6 @@ class bot_utills(commands.Cog):
         embed.add_field(name="개발,운영", value="`그저 평범한 인간#8138`", inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
         await ctx.send(embed=embed)
-
-
 
 def setup(client):
     client.add_cog(bot_utills(client))
