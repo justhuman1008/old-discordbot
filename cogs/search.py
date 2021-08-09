@@ -18,27 +18,15 @@ import json
 from requests import get, post
 import xml.etree.ElementTree as ET
 from os import environ
+from datetime import datetime # 시간표시용
+
+now = datetime.now()
 
 
 class search(commands.Cog): 
 
     def __init__(self, bot): 
         self.bot = bot 
-
-        def translate(source,target,text):
-             #네이버 api URL
-            URL = 'https://openapi.naver.com/v1/papago/n2mt'
-
-            #api 요청을 위한 헤더와 변수를 작성한다
-            headers = {'X-Naver-Client-Id': self.client_id,
-                    'X-Naver-Client-Secret': self.client_secret}
-            data = {'source': source, 'target': target, 'text': text}
-
-            #네이버 api에 요청을 보내고 받아온다
-            response = json.loads(requests.post(URL, headers=headers, data=data).text)
-
-            #번역된 결과를 리턴한다
-            return response["message"]["result"]["translatedText"]
 
     @commands.command(aliases=['검색', '인터넷'])
     async def _searchhelp(self, ctx):
@@ -73,10 +61,9 @@ class search(commands.Cog):
 
     @commands.command(aliases=['인벤뉴스'])
     async def _inven(self, ctx):
-        """인벤의 주요뉴스를 보여줍니다"""
         embed = discord.Embed(title="인벤 주요뉴스",description="[인벤 뉴스 바로가기](http://www.inven.co.kr/webzine/news/?hotnews=1)", color=0xffdc16)
         targetSite = 'http://www.inven.co.kr/webzine/news/?hotnews=1'
-
+        print(f'인벤 주요뉴스를 출력하기 위해 인벤에 접속을 시도합니다.')
         header = {'User-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'}
         melonrqRetry = requests.get(targetSite, headers=header)
         melonht = melonrqRetry.text
@@ -89,11 +76,12 @@ class search(commands.Cog):
             embed.add_field(name="{0:3d}. {1}".format(i + 1, artist), value='{0}'.format(title), inline=False)
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/869039284731133972/3b429bed8d202ca5.png')
         await ctx.send(embed=embed)
+        print(f'인벤 주요뉴스 출력 완료')
 
 
     @commands.command(aliases=['멜론차트','노래순위'])
     async def _musicadad(self, ctx):
-        """멜론차트를 모여줍니다."""
+        print(f'멜론차트를 출력하기 위해 멜론에 접속을 시도합니다.')
         embed = discord.Embed(
             title="멜론 음악차트", description="[멜론차트 바로가기](https://www.melon.com/chart/index.htm)", color=0xffdc16)
         targetSite = 'https://www.melon.com/chart/index.htm'
@@ -110,9 +98,11 @@ class search(commands.Cog):
             embed.add_field(name="{0:3d}위 : {1}".format(i + 1, title), value='{0} - {1}'.format(artist, title), inline=False)
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995777719500881/1.png')
         await ctx.send(embed=embed)
+        print(f'멜론차트 출력 완료')
 
     @commands.command(aliases=['날씨'],usage="!날씨 `{지역명}`")
     async def weather(self, ctx, location):
+        print(f'날씨를 출력하기 위해 네이버에 접속을 시도합니다.')
         try:
             enc_location = urllib.parse.quote(location+'날씨')
             hdr = {'User-Agent': 'Mozilla/5.0'}
@@ -152,7 +142,9 @@ class search(commands.Cog):
             embed.add_field(name='오늘 오전/오후 날씨', value=tomorrowTemp, inline=False)  # 오늘날씨 # color=discord.Color.blue()
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995043473018950/pngwing.com.png')
             await ctx.send(embed=embed)
+            print(f'날씨 출력 완료')
         except:
+            print(f'`{location}`의 날씨 출력에 실패하였습니다.')
             embed = discord.Embed(title= "날씨 불러오기 실패", color=0xffdc16, description="아래의 내용을 확인해주세요")
             embed.add_field(name="­", value=f"지역명이 `{location}`이(가) 맞는지 확인해주세요.", inline=False)
             embed.add_field(name="­", value=f"[네이버 검색](https://www.naver.com/)이 작동하고 있는지 확인해주세요.", inline=False)
@@ -160,6 +152,7 @@ class search(commands.Cog):
 
     @commands.command(aliases=['한강','한강수온'])
     async def 수온(self, ctx):
+        print(f'한강수온을 검색하기 위해 사이트에 접속을 시도합니다.')
         req = Request("http://hangang.dkserver.wo.tc/")
         webpage = urlopen(req).read()
         output = json.loads(webpage)
@@ -169,9 +162,11 @@ class search(commands.Cog):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867993227742035988/gksrks.jpg')
 #        embed.set_footer(text=f"측정시간 : {time}")
         await ctx.send(embed=embed)
+        print(f'한강수온 출력 완료')
 
     @commands.command(name="코로나",ailases=["코로나바이러스", "우한", "우한폐렴", "우한", "신종코로나", "신종코로나바이러스", "코로나19"])
     async def ncov2019(self, ctx):
+        print(f'코로나 현황을 검색하기 위해 사이트에 접속을 시도합니다.')
         async with aiohttp.ClientSession(trust_env=True) as session:
             async with session.get(
                 "http://ncov.mohw.go.kr/index_main.jsp"
@@ -192,6 +187,8 @@ class search(commands.Cog):
         embed.add_field(name="코로나-19 최신 브리핑",value="[{}](http://ncov.mohw.go.kr{})".format(newstNews.text, newstNews.get("href")),inline=False)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/869449509359484991/af275a5f9980be9e.png')
         await ctx.send(embed=embed)
+        print(f'코로나-19 국내 현황 출력 완료')
+
 
 
 def setup(bot):
