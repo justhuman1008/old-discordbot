@@ -2,7 +2,7 @@
 Discord.py를 이용한 잡탕 봇입니다.
 
 developer : Justhuman1008(그저 평범한 인간#8138)  
-Ver: 1.0(2021-08-02)  
+Ver: 1.1(2021-08-09)  
 pip(내장 제외) : [requirements.txt](https://github.com/justhuman1008/Just_Bot/blob/main/requirements.txt)
 
 봇 도움말:  
