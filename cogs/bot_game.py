@@ -3,28 +3,15 @@ from discord.ext import commands, tasks
 import random
 import math
 import asyncio
-from datetime import datetime # 시간표시용
 
-now = datetime.now()
 
 class bot_game(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['놀이', '게임'])
-    async def _gamehelp(self, ctx):
-        embed = discord.Embed(title="놀이 명령어", description="­", color=0xffdc16)
-        embed.add_field(name=':small_blue_diamond:'+"!따라하기 `{채팅}`", value="{채팅}을 따라합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!소수 `{N}`", value="{N}이 소수인지 확인합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!주사위", value="정육면체 주사위를 굴립니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!숫자", value="1~100중 숫자 하나를 뽑습니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/780341733128011816/lego.png')
-        await ctx.send(embed = embed)
-
-
-    @commands.command()
-    async def 주사위(self, ctx):
+    @commands.command(aliases=['주사위']) # Com2
+    async def _Dice(self, ctx):
         randomNum = random.randrange(1,7)
         if randomNum == 1:
             embed = discord.Embed(title="주사위를 던졌다", description=':game_die: '+ ':one:', color=0xffdc16)
@@ -45,16 +32,15 @@ class bot_game(commands.Cog):
             embed = discord.Embed(title="주사위를 던졌다", description=':game_die: '+ ':six:', color=0xffdc16)
             await ctx.send(embed=embed)
 
-
-    @commands.command()
-    async def 숫자(self, ctx):
+    @commands.command(aliases=['숫자']) # Com3
+    async def _rannum(self, ctx):
         card = random.randint(1,100)
         embed = discord.Embed(title="랜덤숫자 뽑기", description="­", color=0xffdc16)
         embed.add_field(name=card, value="과연 뭐가 뽑혔을까..", inline=False)
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/780346351917465600/pcc.png")
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['따라하기', '따라해'],usage="!따라하기 `{말}`")
+    @commands.command(aliases=['따라하기', '따라해'],usage="!따라하기 `{말}`") # Com4
     async def _repeat(self, ctx, *, content):
         if "@everyone" in content or "@here" in content:
             embed = discord.Embed(title="`@everyone`이나 `@here`이 포함된 채팅은 따라하지 않습니다.",color=0xffdc16)
@@ -63,11 +49,7 @@ class bot_game(commands.Cog):
             msg = await ctx.send(f"{content}")
             await msg.add_reaction("💬")
 
-
-
-            
-
-    @commands.command(aliases=['소수'],usage="!소수 `{N}`")
+    @commands.command(aliases=['소수'],usage="!소수 `{N}`") # Com5
     async def _isprime(self, ctx, num: int):
         isprime = discord.Embed(title=f"{num}은 소수입니다.", description=f'[{num}이 왜 소수인가요?](https://www.integers.co/questions-answers/is-{num}-a-prime-number.html)', color=0xffdc16)
         isprime.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/777101285525684234/mathmu.png")
