@@ -1,75 +1,26 @@
 import discord #pip
 from discord.ext import commands
 import asyncio
-from datetime import datetime # 시간표시용
 
-now = datetime.now()
-
-def is_it_me(ctx): #관리자 계정 확인(나)
-    return ctx.author.id == 512166620463104004
+import setting
+Bot_name = setting.Bot_Name
+Bot_invite = setting.Bot_invite
 
 class bot_utills(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-    # Events
-
-    # Commands
-
-    @commands.command(aliases=['봇'])
-    async def _bothelp(self, ctx):
-        embed = discord.Embed(title="봇 관련 명령어", description="­", color=0xffdc16)
-        embed.add_field(name=':small_blue_diamond:'+"!도움말", value="봇 도움말을 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇 명령어 목록을 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!회원가입", value="회원가입을 진행합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!탈퇴", value="회원탈퇴를 진행합니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
-        await ctx.send(embed = embed)
-
-    @commands.command()
-    async def test(self, ctx):
-        await ctx.send('test')
-
-
-    @commands.command(aliases=['pong', '핑', '퐁'])
-    async def ping(self, ctx):
-            async with ctx.typing():
-                await asyncio.sleep(0)
-                embed = discord.Embed(title = ":ping_pong: 현재 봇의 핑", description = f"{round(self.client.latency * 1000, 3)}ms", colour = discord.Colour(0xffdc16))
-                await ctx.send(embed = embed)
-
-    @commands.command(name="반응체크")
-    async def get_reaction_and_react(self, ctx):
-        msg = await ctx.send("1, 2, 3 반응 중 2 반응을 달아주세요.")
-        reaction_list = ['1️⃣', '2️⃣', '3️⃣']
-        for r in reaction_list:
-            await msg.add_reaction(r)
-        def check(reaction, user):
-            return str(reaction) in reaction_list and user == ctx.author and reaction.message.id == msg.id
-        try:
-            reaction, _user = await self.client.wait_for("reaction_add", check=check, timeout=10.0)
-        except asyncio.TimeoutError:
-            await ctx.send("시간 초과되었습니다.")
-        else:
-            if str(reaction) == '2️⃣':
-                await ctx.send("성공!")
-            else:
-                await ctx.send("실패!")
-
-            pass
     @commands.command(aliases=['초대'])
-    async def _bothelp(self, ctx):
-        embed = discord.Embed(title="그저 평범한 봇 초대하기", description="", color=0xffdc16)
-        embed.add_field(name="­", value='[그저 평범한 봇 서버에 추가하기](https://discord.com/oauth2/authorize?client_id=857814380749651998&permissions=173144927479&scope=bot)', inline=True)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+    async def _botinv(self, ctx):
+        embed = discord.Embed(title=Bot_name+" 초대하기", description="", color=0xffdc16)
+        embed.add_field(name="­", value=f'[{Bot_name} 서버에 추가하기]({Bot_invite})', inline=True)
+        embed.set_thumbnail(url=setting.Bot_Image)
         await ctx.send(embed = embed)
 
-    @commands.command(aliases=['정보'])
+    @commands.command(aliases=['봇','정보'])
     async def _botinfo(self, ctx):
-        embed = discord.Embed(title="그저 평범한 봇", description="­", color=0xffdc16)
+        embed = discord.Embed(title=Bot_name, description="­", color=0xffdc16)
         embed.add_field(name="핑", value=f'`{round(self.client.latency * 1000)}ms`', inline=True)
         embed.add_field(name='봇 접두사', value='`!{명령어}`', inline=True)
         embed.add_field(name="­", value="­", inline=True)
@@ -79,9 +30,21 @@ class bot_utills(commands.Cog):
         embed.add_field(name="개발 언어", value="`Python`", inline=True)
         embed.add_field(name='GitHub', value='[Bot GitHub](https://github.com/justhuman1008/Just_Bot)', inline=True)
         embed.add_field(name="호스팅", value="[Heroku](https://heroku.com/)", inline=True)
-        embed.add_field(name="개발,운영", value="`그저 평범한 인간#8138`", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/865508255144345610/c9dae6501347cb49.jpg')
+        embed.add_field(name="개발,운영", value="`Just_human1008#8138`", inline=False)
+        embed.set_thumbnail(url=setting.Bot_Image)
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=['pong', '핑', '퐁'])
+    async def ping(self, ctx):
+            async with ctx.typing():
+                await asyncio.sleep(0)
+                embed = discord.Embed(title = ":ping_pong: 현재 봇의 핑", description = f"{round(self.client.latency * 1000, 3)}ms", colour = discord.Colour(0xffdc16))
+                await ctx.send(embed = embed)
+
+
+    @commands.command(aliases=['테스트', '태스트'])
+    async def test(self, ctx):
+        await ctx.send('test')
 
 def setup(client):
     client.add_cog(bot_utills(client))

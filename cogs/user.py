@@ -1,12 +1,12 @@
-from openpyxl import load_workbook, Workbook
 import discord
 import asyncio
 from discord.ext import commands
-from datetime import datetime # 시간표시용
+from openpyxl import load_workbook, Workbook
 
-now = datetime.now()
-
-my_id = 512166620463104004
+import setting
+Owner_ID = setting.Bot_Owner
+Now_KST = setting.Now_KST
+Bot_name = setting.Bot_Name
 
 c_name = 1
 c_id = 2
@@ -123,7 +123,7 @@ class user(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['회원가입'])
+    @commands.command(aliases=['회원가입']) # Com1
     async def _reg(self, ctx):
         print("------------------------------")
         print(f"{ctx.author}님이 회원가입이 가능한지 확인합니다.")
@@ -138,7 +138,7 @@ class user(commands.Cog):
             print("DB에서 `"+ctx.author.name+"`을 찾을 수 없습니다")
             print("회원가입 안내를 진행합니다.")
 
-            register = discord.Embed(title="그저 평범한 봇 회원가입", description="­봇의 일부 기능을 이용하기 위해서는 회원가입이 필요합니다.", color=0xffdc16)
+            register = discord.Embed(title=Bot_name+" 회원가입", description="­봇의 일부 기능을 이용하기 위해서는 회원가입이 필요합니다.", color=0xffdc16)
             register.add_field(name="­", value="회원가입을 진행하시려면 `1분`내로 ✅를 클릭해주세요.", inline=False)
             register.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/871987758510518282/clipart2415195.png')
 
@@ -174,13 +174,13 @@ class user(commands.Cog):
                     await msg.edit(embed=regfail)
                 pass
 
-    @commands.command(aliases=['회원탈퇴', '탈퇴'])
+    @commands.command(aliases=['회원탈퇴', '탈퇴']) # Com2
     async def _unreg(self, ctx):
         print("------------------------------")
         print(f"{ctx.author}님이 탈퇴가 가능한지 확인합니다.")
         userExistance, userRow = checkUser(ctx.author.name, ctx.author.id)
         if userExistance:
-            unreg = discord.Embed(title="그저 평범한 봇 회원탈퇴", description="­회원탈퇴시 일부 기능을 사용할 수 없습니다.", color=0xffdc16)
+            unreg = discord.Embed(title=Bot_name+" 회원탈퇴", description="­회원탈퇴시 일부 기능을 사용할 수 없습니다.", color=0xffdc16)
             unreg.add_field(name="회원탈퇴시 현재 보유한 ```모든 재화가 사라집니다.```", value="­", inline=False)
             unreg.add_field(name="­", value="회원탈퇴을 진행하시려면 `1분`내로 ✅를 클릭해주세요.", inline=False)
             unreg.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/872301891197997086/093554.png')
@@ -224,16 +224,16 @@ class user(commands.Cog):
             cantureg.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/871987758510518282/clipart2415195.png')
             await ctx.send(embed=cantureg)
     
-    @commands.command(aliases=['DB초기화', 'DB제거'])
+    @commands.command(aliases=['회원초기화'])
     async def _reset(self, ctx):
-        if ctx.author.id == my_id:
-            resetdb = discord.Embed(title="그저 평범한 봇 DB", description="봇의 DB를 모두 제거하시겠습니까?", color=0xffdc16)
-            resetdb.add_field(name="해당 작업 수행시 DB는 초기화되며 복구는 불가능합니다", value="­", inline=False)
-            resetdb.add_field(name="­", value="DB를 제거하시려면 `10초`내로 ✅를 클릭해주세요.", inline=False)
+        if str(ctx.author.id) == Owner_ID:
+            resetdb = discord.Embed(title=Bot_name+" DB", description="봇의 회원 DB를 모두 제거하시겠습니까?", color=0xffdc16)
+            resetdb.add_field(name="해당 작업 수행시 회원 DB는 초기화되며 복구는 불가능합니다", value="­", inline=False)
+            resetdb.add_field(name="­", value="회원 DB를 제거하시려면 `10초`내로 ✅를 클릭해주세요.", inline=False)
 
-            reset = discord.Embed(title="그저 평범한 봇 DB", description="봇의 DB가 초기화되었습니다.", color=0xffdc16)
+            reset = discord.Embed(title=Bot_name+" DB", description="봇의 회원 DB가 초기화되었습니다.", color=0xffdc16)
 
-            recan = discord.Embed(title="그저 평범한 봇 DB", description="봇의 DB 초기화를 취소하였습니다.", color=0xffdc16)
+            recan = discord.Embed(title=Bot_name+" DB", description="봇의 회원 DB 초기화를 취소하였습니다.", color=0xffdc16)
 
             msg = await ctx.send(embed = resetdb)
             reaction_list = ['✅', '❌']
@@ -254,7 +254,7 @@ class user(commands.Cog):
                     await msg.edit(embed=recan)
             pass
         else:
-            print(f'{ctx.author}님이 봇 DB 초기화를 시도하였습니다. : %s월 %s일 %s시 %s분' %(now.month, now.day, now.hour, now.minute))
+            print(f'{ctx.author}님이 봇 DB 초기화를 시도하였습니다. : '+Now_KST)
 
         delete()
         print("유저 DB가 초기화되었습니다.")

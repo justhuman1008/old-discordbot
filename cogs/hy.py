@@ -1,8 +1,5 @@
 import discord #pip
 from discord.ext import commands, tasks
-from datetime import datetime # 시간표시용
-
-now = datetime.now()
 
 
 
