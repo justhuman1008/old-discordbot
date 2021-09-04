@@ -10,9 +10,6 @@ from urllib.parse import quote
 import re # Regex for youtube link
 import warnings
 import requests
-from datetime import datetime # 시간표시용
-
-now = datetime.now()
 
 opggsummonersearch = 'https://www.op.gg/summoner/userName='
 
@@ -45,12 +42,12 @@ def tierCompare(solorank, flexrank):
 warnings.filterwarnings(action='ignore')
 
 
-class state(commands.Cog): #2
+class game(commands.Cog): #2
     def __init__(self, bot): #3
         self.bot = bot #4
 
 
-    @commands.command(aliases=['롤전적', '롤티어'],usage="!롤전적 `{닉네임}`")
+    @commands.command(aliases=['롤전적', '롤티어'],usage="!롤전적 `{닉네임}`") # Com1
     async def _lol(self, ctx, *, playerNickname):
         playerNickname = playerNickname.replace(" ", "+")
         """롤전적을 보여줍니다."""
@@ -205,7 +202,7 @@ class state(commands.Cog): #2
                 embed.add_field(name="???", value="올바르지 않은 소환사 이름입니다.", inline=False)
                 await ctx.send(embed=embed)
 
-    @commands.command(aliases=['스팀'],usage="!스팀 `{SteamID(17자리 숫자)} / !스팀 `{사용자 지정 URL}`")
+    @commands.command(aliases=['스팀'],usage="!스팀 `{SteamID(17자리 숫자)} / !스팀 `{사용자 지정 URL}`") # Com2
     async def steam(self, ctx, ID):
         profileURL = "https://steamcommunity.com/id/" + ID #기본적으로 개인 URL을 이용
         if ID.isdigit() == True: # ID가 정수일떄
@@ -269,4 +266,4 @@ class state(commands.Cog): #2
                 await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(state(bot))  
+    bot.add_cog(game(bot))  
