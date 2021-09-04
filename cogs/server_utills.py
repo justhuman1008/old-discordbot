@@ -1,37 +1,15 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
 from discord.utils import get
 from discord.utils import *
-from datetime import datetime # 시간표시용
 
-now = datetime.now()
 
-is_it_me = 512166620463104004
 
 class server_utills(commands.Cog):
 
     def __init__(self, client):
         self.bot = client
         self.stopcodes = 0
-
-    @commands.command(aliases=['서버 관리', '서버관리'])
-    async def _serverhelp(self, ctx):
-        embed = discord.Embed(title="서버 관리용 명령어", description="­", color=0xffdc16)
-        embed.add_field(name=':small_blue_diamond:'+"!서버정보", value="서버에 대한 정보를 출력합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!추방 `{멘션}`", value="멘션한 유저를 추방합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!차단 `{멘션}`", value="`멘션한 유저를 차단합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!슬로우모드 `{N}`", value="{N}초 만큼 슬로우모드를 적용합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!청소 `{N}`", value="{N}만큼 메시지를 삭제합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!초대링크 `{N}`", value="서버 초대링크({N}회 제한)를 생성합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!음성채널생성 `{채널명}`", value="{채널명} 채널을 생성합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!카테고리생성 `{카테고리명}`", value="{카테고리명} 카테고리를 생성합니다.", inline=False)
-        embed.add_field(name=':small_blue_diamond:'+"!역할생성 `{역할명}`", value="{역할명} 역할을 생성합니다.", inline=False)
-        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
-        await ctx.send(embed = embed)
-
-
 
     @commands.command(aliases=['서버정보', '서버 정보'])
     async def _guildinfo(self, ctx):
@@ -116,7 +94,7 @@ class server_utills(commands.Cog):
         await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
         print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
 
-    @commands.command(aliases=['차단해제', '언밴'],usage="!차단해제 `{닉네임#태그}`")
+    @commands.command(aliases=['차단해제', '언밴'],usage="!차단해제 `{닉네임#태그}`") #Com5
     @commands.has_permissions(administrator=True)
     async def unban(self, ctx, *, member):
 
@@ -144,7 +122,7 @@ class server_utills(commands.Cog):
         await ctx.send(embed=user_info)
 
     @commands.command(aliases=['역할추가', '역할생성'])
-    @commands.has_permissions(manage_roles=True) # Check if the user executing the command can manage roles
+    @commands.has_permissions(manage_roles=True)
     async def _create_role(self, ctx, role):
 	    await ctx.guild.create_role(name=role,colour=discord.Colour(0xf8e71c))
 	    await ctx.send(embed=discord.Embed(title=f"역할 `{role}`이(가) 생성되었습니다.", color=0xf8e71c))
