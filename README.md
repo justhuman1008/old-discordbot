@@ -11,7 +11,14 @@ pip : [requirements.txt](https://github.com/justhuman1008/Just_Bot/blob/main/req
 이 봇은 한국어만을 지원합니다.   
 These bots support only Korean.
 
-## Self Hosting
-1. 해당 프로젝트 파일을 전부 다운로드 받는다.
-2. `setting.py`를 열고 본인의 정보로 변경한다.
+## 💻셀프 호스팅
+- 프로그래밍에 대해 1도 모르는분인 경우에 보시면 됩니다. 어느정도 안다는 분은 안보시는게..~~(안구테러)~~  
+ 
+1. 해당 프로젝트 파일을 다운로드 받는다. 
+윈도우나 리눅스의 터미널에서 다음과 같이 입력합니다.   
+```shell
+pip install -r requirements.txt
+```
+2. `setting.py` 파일에 본인의 정보를 입력한다.   
+
 3. 원하는 호스팅에 연결하여 운영한다.
