@@ -54,5 +54,5 @@ Developer Discord: 그저 평범한 인간#8138
        ```
 ##### 9. 봇 가동하기
    - [Heroku 사이트](https://dashboard.heroku.com/apps)에 접속해서 본인의 앱을 클릭합니다.
-<img src="/Image/Heroku_Worker.png" alt ="Data" style="width: 500px;"/>  
+      <img src="/Image/Heroku_Worker.png" alt ="Data"/>  
    - `Resources` -> `연필` -> `스위치` 활성화 -> `confirm` 클릭 (Resource탭에 아무것도 안뜬다면 잠시 기다린 후 새로고침해주세요)
