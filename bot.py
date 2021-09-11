@@ -253,7 +253,6 @@ async def alcommand(ctx,admin="Just Commands"):
     admincmd.add_field(name=':small_blue_diamond:'+"!reload `{Cog Name}`", value="{Cog}를 리로드(재가동)합니다.", inline=False)
     admincmd.add_field(name=':small_blue_diamond:'+"!DB저장", value="봇 DB를 관리자 메일로 전송합니다.", inline=False)
     admincmd.add_field(name=':small_blue_diamond:'+"!회원초기화", value="봇 회원 DB를 초기화(전부 제거)합니다.", inline=False)
-    admincmd.add_field(name=':small_blue_diamond:'+"!진단정보초기화", value="자가진단정보 DB를 초기화(전부 제거)합니다.", inline=False)
     admincmd.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
 
     adcmdck = ["봇관리","관리자","제어"]
