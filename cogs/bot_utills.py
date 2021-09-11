@@ -5,6 +5,7 @@ import asyncio
 import setting
 Bot_name = setting.Bot_Name
 Bot_invite = setting.Bot_invite
+Bot_Image = setting.Bot_Image
 
 class bot_utills(commands.Cog):
 
@@ -31,7 +32,7 @@ class bot_utills(commands.Cog):
         embed.add_field(name='GitHub', value='[Bot GitHub](https://github.com/justhuman1008/Just_Bot)', inline=True)
         embed.add_field(name="호스팅", value="[Heroku](https://heroku.com/)", inline=True)
         embed.add_field(name="개발,운영", value="`Just_human1008#8138`", inline=False)
-        embed.set_thumbnail(url=setting.Bot_Image)
+        embed.set_thumbnail(url=Bot_Image)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['pong', '핑', '퐁'])

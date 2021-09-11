@@ -12,6 +12,7 @@ Owner_ID = setting.Bot_Owner
 Today_KST = setting.Today_KST
 Now_KST = setting.Now_KST
 Bot_name = setting.Bot_Name
+Stop_SelfCheck = setting.Stop_SelfCheck
 
 # 디코닉 디코ID 본명 자가진단비번 생년월일(6자) 지역명 학교급 학교명
 c_name = 1
@@ -260,7 +261,7 @@ class corona(commands.Cog):
 
     @commands.command(aliases=["일괄진단"]) # 추후 매일 특정시간대에 작동필, IP차단 우회필
     async def _Autocheck(self, ctx):
-        more8am = str(Today_KST)+ setting.Stop_SelfCheck
+        more8am = str(Today_KST)+ Stop_SelfCheck
         if Now_KST > more8am:
             await ctx.send(embed=discord.Embed(title=f'일괄진단은 오전 8시 10분 이전에만 가능합니다.', color=0xf8e71c))
             return
