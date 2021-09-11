@@ -1,13 +1,14 @@
 #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 # 본인 정보로 변경해주세요
+
 Bot_Prefix = "!"
 Bot_Name = "봇 이름"
 Bot_TOKEN="봇 토큰"
-Bot_Image = "봇 프로필 이미지"
+Bot_Image = "봇 프로필 이미지 링크"
 Bot_invite = "봇 초대링크"
 
-Bot_Owner= "봇 소유자 디스코드 ID"
-Owner_Name = "디스코드 닉네임(닉네임#태그)"
+Bot_Owner= "봇 소유자 디스코드 ID" #참고: https://vo.la/7D69P
+Owner_Name = "디스코드 닉네임(닉네임#태그)" #본인의 디스코드 닉네임#태그
 
 
 Email_Sender="보내는 이메일"
@@ -16,10 +17,8 @@ Receive_Email= "받는 이메일"
 
 Stop_SelfCheck = " 08:10:00"# !일괄진단이 멈추는 시간
 
-
-
-
-
+if Bot_Image == "봇 프로필 이미지 링크":
+    Bot_Image == "https://discord.com/assets/c09a43a372ba81e3018c3151d4ed4773.png"
 
 
 
@@ -34,7 +33,10 @@ Stop_SelfCheck = " 08:10:00"# !일괄진단이 멈추는 시간
 
 
 #ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-# 파일 공통 변수
+# 이미지 대응
+if Bot_Image == "봇 프로필 이미지 링크":
+    Bot_Image = "https://discord.com/assets/c09a43a372ba81e3018c3151d4ed4773.png"
+# 시간대 변경(KST)
 import os
 from datetime import datetime
 import pytz
