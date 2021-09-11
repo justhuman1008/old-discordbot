@@ -188,14 +188,6 @@ async def help(ctx,commands="No Category"):
     voiceem.add_field(name=':small_blue_diamond:'+"!음소거", value="봇의 마이크를 끕니다.", inline=False)
     voiceem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/870547423196499968/3faa9d34cc341657.png')
 
-    #자가진단
-    hssckem = discord.Embed(title="자가진단 관련 명령어", description="현재 자가진단 시스템은 IP 차단으로 인해 이용이 불가능합니다.", color=0xffdc16)
-    hssckem.add_field(name=':small_blue_diamond:'+"!자가진단 \n      `{본명}` `{진단비번}` `{생년월일}` `{지역}` `{학교급}` `{학교명}`", value="입력된 정보로 교육청 자가진단을 진행합니다.\n(`!진단정보`로 정보를 입력했다면 정보를 입력하지 않아도 작동)", inline=False)
-    hssckem.add_field(name=':small_blue_diamond:'+"!일괄진단", value="봇에 등록된 진단정보 전부 자동으로 자가진단을 진행합니다.", inline=False)
-    hssckem.add_field(name=':small_blue_diamond:'+"!진단정보등록 \n      `{본명}` `{진단비번}` `{생년월일}` `{지역}` `{학교급}` `{학교명}`", value="봇에 자가진단 정보를 암호화하여 저장합니다.\n(매일 7시~ 7시 20분 사이에 자동으로 자가진단을 진행합니다.)", inline=False)
-    hssckem.add_field(name=':small_blue_diamond:'+"!진단정보삭제", value="본인이 입력한 자가진단 정보를 삭제합니다.", inline=False)
-    hssckem.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/880753863328690176/ef6ce3bd06622059.png')
-
     #봇
     botcmdem = discord.Embed(title="봇 관련 명령어", description="­", color=0xffdc16)
     botcmdem.add_field(name=':small_blue_diamond:'+"!정보", value="봇의 정보를 출력합니다.", inline=False)
@@ -234,10 +226,6 @@ async def help(ctx,commands="No Category"):
         await ctx.send(embed=voiceem)
         return
 
-    if commands == "자가진단":
-        await ctx.send(embed=hssckem)
-        return
-
     if commands == "봇":
         await ctx.send(embed=botcmdem)
         return
@@ -256,7 +244,6 @@ async def alcommand(ctx,admin="Just Commands"):
     cmdem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!마크 구매` `!마크 사양` `!마크 날씨` `!마크 세계` `!마크 색코드`\n`!발전과제` `!UUID` `!스킨` `!하이픽셀`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"음성", value="`!참가` `!나가` `!음소거`", inline=False)
-    cmdem.add_field(name=':small_blue_diamond:'+"자가진단", value="`!자가진단` `!진단정보등록` `!일괄진단`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"봇", value="`!정보` `!도움말` `!명령어` `!회원가입` `!탈퇴` `!초대` `!ping`", inline=False)
     cmdem.set_thumbnail(url=Bot_Image)
 
