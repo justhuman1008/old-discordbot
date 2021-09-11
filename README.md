@@ -1,5 +1,5 @@
 # 그저 평범한 봇
-[![Send mail](https://img.shields.io/badge/-seanking1008@naver.com-63d863?style=flat-square&logo=gmail&logoColor=white&link=mailto:support@leok.kr)](mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v1.2-9ACD32?style=flat-square&logo=pypi&logoColor=white&link=mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v3.x-3776AB?style=flat-square&logo=python&logoColor=white&link=mailto:support@leok.kr)  
+[![Send mail](https://img.shields.io/badge/-seanking1008@naver.com-63d863?style=flat-square&logo=gmail&logoColor=white&link=mailto:support@leok.kr)](mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v1.2.1-9ACD32?style=flat-square&logo=pypi&logoColor=white&link=mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v3.x-3776AB?style=flat-square&logo=python&logoColor=white&link=mailto:support@leok.kr)  
 Discord.py를 이용한 잡탕 봇 프로젝트입니다.
 
 Developer Discord: 그저 평범한 인간#8138     
