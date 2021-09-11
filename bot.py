@@ -128,7 +128,6 @@ async def help(ctx,commands="No Category"):
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 마인크래프트", value="마인크래프트 관련 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 놀이", value="놀이용 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 음성", value="디스코드 통화방 관련 명령어", inline=False)
-    helpem.add_field(name=':small_blue_diamond:'+"!도움말 자가진단", value="교육청 자가진단 관련 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 봇", value="봇 관리용 명령어", inline=False)
     helpem.add_field(name="­", value='🔍 `!명령어` 입력시 모든 명령어 확인 가능', inline=False)
     helpem.set_thumbnail(url=Bot_Image)
