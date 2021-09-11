@@ -8,12 +8,22 @@ from itertools import cycle # 주기 생성
 import asyncio
 from discord.ext.commands.converter import TextChannelConverter
 import time
+import sys
 
 import setting
 Owner_ID = setting.Bot_Owner
 now_kst = setting.Now_KST
 Bot_name = setting.Bot_Name
+Bot_Image = setting.Bot_Image
+Owner_Name = setting.Owner_Name
+Bot_TOKEN = setting.Bot_TOKEN
 
+if Bot_TOKEN == "봇 토큰":
+    print("=========================")
+    print("에러!!")
+    print('토큰을 `setting.py`에 입력해주세요')
+    print("=========================")
+    sys.exit()
 
 client = commands.Bot(command_prefix = setting.Bot_Prefix)
 
@@ -106,7 +116,7 @@ async def _clear(ctx, amount : int):
 
 @client.command(aliases=['hellothisisverification'],usage="개발자확인용")#한국봇리스트 인증용
 async def _checkbotowner(ctx):
-    await ctx.send(setting.Owner_Name)
+    await ctx.send(Owner_Name)
 
 @client.command(aliases=['Help', 'HELP', '도움', '도움말'])
 async def help(ctx,commands="No Category"):
@@ -121,7 +131,7 @@ async def help(ctx,commands="No Category"):
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 자가진단", value="교육청 자가진단 관련 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 봇", value="봇 관리용 명령어", inline=False)
     helpem.add_field(name="­", value='🔍 `!명령어` 입력시 모든 명령어 확인 가능', inline=False)
-    helpem.set_thumbnail(url=setting.Bot_Image)
+    helpem.set_thumbnail(url=Bot_Image)
 
     #서버관리
     serverem = discord.Embed(title="서버 관리용 명령어", description="­", color=0xffdc16)
@@ -195,7 +205,7 @@ async def help(ctx,commands="No Category"):
     botcmdem.add_field(name=':small_blue_diamond:'+"!탈퇴", value="회원탈퇴를 진행합니다.", inline=False)
     botcmdem.add_field(name=':small_blue_diamond:'+"!초대", value=Bot_name+"의 초대링크를 출력합니다.", inline=False)
     botcmdem.add_field(name=':small_blue_diamond:'+"!ping", value="봇의 핑을 출력합니다.", inline=False)
-    botcmdem.set_thumbnail(url=setting.Bot_Image)
+    botcmdem.set_thumbnail(url=Bot_Image)
 
     if commands == "No Category": # 기본 도움말
         await ctx.send(embed=helpem)
@@ -248,7 +258,7 @@ async def alcommand(ctx,admin="Just Commands"):
     cmdem.add_field(name=':small_blue_diamond:'+"음성", value="`!참가` `!나가` `!음소거`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"자가진단", value="`!자가진단` `!진단정보등록` `!일괄진단`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"봇", value="`!정보` `!도움말` `!명령어` `!회원가입` `!탈퇴` `!초대` `!ping`", inline=False)
-    cmdem.set_thumbnail(url=setting.Bot_Image)
+    cmdem.set_thumbnail(url=Bot_Image)
 
     # 관리자 명령어 목록
     admincmd = discord.Embed(title="봇 제어 명령어", description="­", color=0xffdc16)
