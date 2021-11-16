@@ -95,87 +95,76 @@ class search(commands.Cog):
             bsObj = BeautifulSoup(html, "html.parser")
             print(' -네이버 접속에 성공하였습니다.')
 
-            # 정보박스
-            areabox = bsObj.find('div', {'class': 'select_box'})
-            MainInfo = bsObj.find('div', {'class': 'main_info'})
-            SubInfo = bsObj.find('div', {'class': 'sub_info'})
-            print(' -메인 정보박스들을 모두 로드하였습니다.')
+            area = bsObj.find('h2', {'class': 'title'}) # 지역명
+            area = area.text
+            print(f' -지역명 로드에 성공했습니다. [{area}]')
 
-            areaname_Sk = areabox.find('em') # 지역명
-            areaname = areaname_Sk.text.strip() 
-            print(' -지역명 로드에 성공했습니다.')
+            Temp = bsObj.find('div', {'class': 'temperature_text'}).get_text() # 현재 온도
+            find_num = Temp.find('도')+1
+            Temp = Temp[find_num:]
+            print(f' -현재 온도 로드에 성공하였습니다. [{Temp}]')
 
-            Temp_sk = MainInfo.find('span', {'class': 'todaytemp'}) # 온도
-            Temp = Temp_sk.text.strip()
-            print(' -현재 온도 로드에 성공하였습니다.')
+            MXLW_Temp = bsObj.find('div', {'class': 'cell_temperature'}).get_text() # 오늘 최저/최고 온도
+            MXLW_Temp = MXLW_Temp.replace("기온","기온: ")
+            print(f' -최저/최고 기온 로드에 성공하였습니다.[{MXLW_Temp}]')
 
-            FeelingTemp_Sk = MainInfo.find('span', {'class': 'sensible'}) # 체감온도
-            FeelingTemp = FeelingTemp_Sk.text.strip()
-            print(' -현재 체감온도 로드에 성공하였습니다.')
-            
-            Cast_Sk = MainInfo.find('p', {'class': 'cast_txt'})  # 날씨추이, 어제와 온도비교
-            Cast = Cast_Sk.text.strip()
-            print(f' -날씨 추이 로드에 성공하였습니다.({Cast})')
+            Cast = bsObj.find('p', {'class': 'summary'}).get_text() # 기상정보 요약
+            Cast = Cast.replace("기온","기온: ")
+            Cast = Cast.replace("요","요 / ")
+            if Cast.find('높아요') > -1:
+                Cast = Cast.replace('높아요', '낮아요')
+            elif Cast.find('낮아요') > -1:
+                rainper = Cast.replace('낮아요', '높아요')
+            print(f' -기상정보 요약 로드에 성공하였습니다.[{Cast}]')
 
+            rainper = bsObj.select('dd', {'class': 'desc'})[0].get_text() # 강수확률
+            print(f' -강수확률 로드에 성공하였습니다.[{rainper}]')
 
-#            MiniDust_Sk = SubInfo.find('dd', {'class': 'lv1'}) # 미세먼지
-#            MiniDust = MiniDust_Sk.text
+            vapor = bsObj.select('dd', {'class': 'desc'})[1].get_text() # 습도
+            print(f' -습도 로드에 성공하였습니다.[{vapor}]')
 
-            AirStatus_Sk = SubInfo.find('dl', {'class': 'indicator'}) # 대기 상태(미세먼지,초미세먼지,오존지수)
-            AirStatus = AirStatus_Sk.text
-            AirStatus = AirStatus.replace("미세먼지", "미세먼지: ")
-            AirStatus = AirStatus.replace("오존지수", "오존지수: ")
-            AirStatus = AirStatus.replace("좋음", " (좋음)\n")
-            AirStatus = AirStatus.replace("보통", " (보통)\n")
-            AirStatus = AirStatus.replace("나쁨", " (나쁨)\n")
-            print(' -공기질 로드에 성공하였습니다.')
+            wind = bsObj.select('dd', {'class': 'desc'})[2].get_text() # 바람
+            print(f' -바람 로드에 성공하였습니다.[{wind}]')
 
 
-            AMPM_Temp_Sk = MainInfo.find('span', {'class': 'merge'})
-            AMPM_Temp = AMPM_Temp_Sk.text.strip()  # 오늘 오전,오후온도
-            print(' -오전/오후 온도 로드에 성공하였습니다.')
-
-            weather = discord.Embed(title=areaname+ ' 날씨 정보', description='[네이버 날씨 바로가기](https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query='+enc_location+')', color=0xffdc16)
-            weather.add_field(name='현재온도', value=Temp+'℃', inline=False)  # 현재온도
-            weather.add_field(name='체감온도', value=FeelingTemp, inline=False)  # 체감온도
-            weather.add_field(name='현재상태', value=Cast, inline=False)  # 밝음,어제보다 ?도 높거나 낮음을 나타내줌
-            weather.add_field(name='현재 대기 상태', value=AirStatus, inline=False)  # 오늘 미세먼지
-            weather.add_field(name='오늘 오전/오후 날씨', value=AMPM_Temp, inline=False)  # 오늘날씨
+            weather = discord.Embed(title=area+ ' 날씨 정보', description=f'[네이버 날씨 바로가기]({url})', color=0xffdc16)
+            weather.add_field(name="현재 상태",value=Cast)
+            weather.add_field(name='현재 온도', value=Temp+'C', inline=False)
+            weather.add_field(name='오늘 최저/최고 기온', value=MXLW_Temp, inline=False)
+            weather.add_field(name='현재 강수확률', value=rainper, inline=False)
+            weather.add_field(name='현재 습도', value=vapor, inline=False)
             weather.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/867995043473018950/pngwing.com.png')
             print(' -네이버로부터 받은 날씨를 임베드에 입력하였습니다.')
 
             try:
-                todayrain = MainInfo.find('span', {'class': 'rainfall'})
-                todayrain = todayrain.text.strip()  # 현재 강수량
-                weather.add_field(name='현재 강수량', value=todayrain, inline=False)
-                print(' -현재 강수량 로드에 성공하였습니다.')
+                Sunbox = bsObj.find('li', {'class': 'item_today level3'}) # 자외선지수
+                Sunlight = Sunbox.text
+                Sunlight = Sunlight.replace("  자외선 ","")
+                print(f' -자외선 지수 로드에 성공하였습니다.[{Sunlight}]')
+                weather.add_field(name='현재 자외선 수치', value=Sunlight, inline=False)
             except:
-                todayrain = "Not Detected"
+                Sunlight = "Not Detected"
 
-            try:
-                Sun_Sk = MainInfo.find('span', {'class': 'indicator'})  # 자외선 수치
-                Sun = Sun_Sk.text.strip()
-                weather.add_field(name='현재 자외선 수치', value=Sun, inline=False)
-                print(f' -현재 자외선 로드에 성공하였습니다.({Sun})')
-            except:
-                Sun = "Not Detected"
+            Sunset = bsObj.find('li', {'class': 'item_today type_sun'}).get_text() # 자외선지수
+            print(f' -일몰시간 로드에 성공하였습니다.[{Sunset}]')
 
-
-            if Cast[0:2] == "맑음":
+            if Cast.find("맑음") > -1:
                 weather.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/882529428054368316/01.png')
                 print(' -날씨 인식후 이미지를 변경하였습니다.(맑음)')
-            if Cast[0:2] == "흐림":
+            elif Cast.find("흐림") > -1:
                 weather.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/881831929127776327/07.png')
                 print(' -날씨 인식후 이미지를 변경하였습니다.(흐림)')
-            if Cast[0:4] == "구름많음":
+            elif Cast.find("구름많음") > -1:
                 weather.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/881831910626717696/05.png')
                 print(' -날씨 인식후 이미지를 변경하였습니다.(구름많음)')
-            if Cast[0:1] == "비":
+            elif Cast.find("비") > -1:
                 weather.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/881832630876778526/09.png')
                 print(' -날씨 인식후 이미지를 변경하였습니다.(비)')
-            print('입력되지 않은 날씨추이로 인해 기본 날씨 이미지를 전송하였습니다.')
-            await ctx.send(embed=weather)
+            else:
+                print('입력되지 않은 날씨추이로 인해 기본 날씨 이미지를 전송하였습니다.')
 
+
+            await ctx.send(embed=weather)
             print(f'날씨 출력 완료')
         except:
             print(f'`{location}`의 날씨 출력에 실패하였습니다.')
