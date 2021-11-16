@@ -146,7 +146,7 @@ class minecraft(commands.Cog):
         mincrft_page1.add_field(name="저희는 그런 것 받지 않습니다(Not Today, Thank You)",value="방패로 발사체를 튕겨내세요",inline=False)
         mincrft_page1.add_field(name="다이아몬드다!(Diamonds!)",value="다이아몬드를 얻으세요",inline=False)
         mincrft_page1.add_field(name="아이스 버킷 챌린지(Ice Bucket Challenge)",value="흑요석을 얻으세요",inline=False)
-        mincrft_page1.add_field(name="­",value="📄 1/2 페이지",inline=False)
+        mincrft_page1.set_footer(text="📄 1/2 페이지")
         mincrft_page1.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882161199704330240/Advancement-Minecraft.png")
 
         mincrft_page2 = discord.Embed(title="Minecraft", description="­", color=0xffdc16)
@@ -156,7 +156,7 @@ class minecraft(commands.Cog):
         mincrft_page2.add_field(name="좀비 의사(Zombie Doctor)",value="좀비 주민을 약화시킨 후 치료하세요",inline=False)
         mincrft_page2.add_field(name="스무고개(Eye Spy)",value="엔더의 눈을 따라가세요",inline=False)
         mincrft_page2.add_field(name="이걸로 끝이야?(The End?)",value="엔드 차원문에 진입하세요",inline=False)
-        mincrft_page2.add_field(name="­",value="📄 2/2 페이지",inline=False)
+        mincrft_page2.set_footer(text="📄 2/2 페이지")
         mincrft_page2.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882161199704330240/Advancement-Minecraft.png")
 
         Nether_page1 = discord.Embed(title="네더(Nether)", description="­", color=0xffdc16)
@@ -171,7 +171,7 @@ class minecraft(commands.Cog):
         Nether_page1.add_field(name="시들어 버린 언덕(Withering Heights)",value="위더를 소환하세요",inline=False)
         Nether_page1.add_field(name="뿅 가는 폭탄주(A Furious Cocktail)",value="모든 물약 효과를 동시에 가지세요",inline=False)
         Nether_page1.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882460460962693280/Advancement-Nether.png")
-        Nether_page1.add_field(name="­",value="📄 1/3 페이지",inline=False)
+        Nether_page1.set_footer(text="📄 1/3 페이지")
 
         Nether_page2 = discord.Embed(title="네더(Nether)", description="­", color=0xffdc16)
         Nether_page2.add_field(name="신호기 꾸리기(Bring Home the Beacon)",value="신호기를 제작하고 설치하세요",inline=False)
@@ -185,14 +185,14 @@ class minecraft(commands.Cog):
         Nether_page2.add_field(name="누가 양파를 써나?(Who is Cutting Onions?)",value="우는 흑요석을 얻으세요",inline=False)
         Nether_page2.add_field(name='목숨 충전(Not Quite "Nine" Lives)',value="리스폰 정박기를 최대로 충전하세요",inline=False)
         Nether_page2.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882460460962693280/Advancement-Nether.png")
-        Nether_page2.add_field(name="­",value="📄 2/3 페이지",inline=False)
+        Nether_page2.set_footer(text="📄 2/3 페이지")
 
         Nether_page3 = discord.Embed(title="네더(Nether)", description="­", color=0xffdc16)
         Nether_page3.add_field(name="반짝반짝 눈이 부셔(Oh Shiny)",value="금으로 피글린의 주의를 돌리세요",inline=False)
         Nether_page3.add_field(name="두 발 달린 보트(This Boat Has Legs)",value="뒤틀린 균 낚싯대를 들고 스트라이더 위에 탑승하세요",inline=False)
         Nether_page3.add_field(name="화끈한 관광 명소(Hot Tourist Destinations)",value="모든 네더 생물 군계를 탐험하세요",inline=False)
         Nether_page3.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882460460962693280/Advancement-Nether.png")
-        Nether_page3.add_field(name="­",value="📄 3/3 페이지",inline=False)
+        Nether_page3.set_footer(text="📄 3/3 페이지")
 
         Ender_page = discord.Embed(title="엔드(The End)", description="­", color=0xffdc16)
         Ender_page.add_field(name="디 엔드(The End)",value="끝일까요, 아니면 시작일까요?",inline=False)
@@ -217,7 +217,7 @@ class minecraft(commands.Cog):
         Adventure_page1.add_field(name="죽음을 초월한 자(Postmortal)",value="불사의 토템으로 죽음을 기만하세요",inline=False)
         Adventure_page1.add_field(name="도우미 고용(Hired Help)",value="마을 방어를 돕기 위해 철 골렘을 소환하세요",inline=False)
         Adventure_page1.add_field(name="모험의 시간(Adventuring Time)",value="모든 생물군계를 발견하세요",inline=False)
-        Adventure_page1.add_field(name="­",value="📄 1/3 페이지",inline=False)
+        Adventure_page1.set_footer(text="📄 1/3 페이지")
         Adventure_page1.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882515992314519552/Advancement-Adventure.png")
 
         Adventure_page2 = discord.Embed(title="모험(Adventure)", description="­", color=0xffdc16)
@@ -231,7 +231,7 @@ class minecraft(commands.Cog):
         Adventure_page2.add_field(name="명사수(Arbalistic)",value="<숨겨진 과제>\n쇠뇌 한 발로 종류가 다른 몹 다섯 마리를 죽이세요",inline=False)
         Adventure_page2.add_field(name="달콤함에 몸을 맡기다(Sticky Situation)",value="꿀 블록을 향해 점프해 낙하를 멈추세요",inline=False)
         Adventure_page2.add_field(name="명중(Bullseye)",value="30미터 이상 떨어진 곳에서 과녁 블록의 정중앙을 맞추세요",inline=False)
-        Adventure_page2.add_field(name="­",value="📄 2/3 페이지",inline=False)
+        Adventure_page2.set_footer(text="📄 2/3 페이지")
         Adventure_page2.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882515992314519552/Advancement-Adventure.png")
 
         Adventure_page3 = discord.Embed(title="모험(Adventure)", description="­", color=0xffdc16)
@@ -240,7 +240,7 @@ class minecraft(commands.Cog):
         Adventure_page3.add_field(name="새인가?(Is it a Bird?)",value="망원경으로 앵무새를 바라보세요",inline=False)
         Adventure_page3.add_field(name="풍선인가?(Is it a Balloon?)",value="망원경으로 가스트를 바라보세요",inline=False)
         Adventure_page3.add_field(name="비행기인가?(Is it a Plane?)",value="망원경으로 엔더 드래곤을 바라보세요",inline=False)
-        Adventure_page3.add_field(name="­",value="📄 3/3 페이지",inline=False)
+        Adventure_page3.set_footer(text="📄 3/3 페이지")
         Adventure_page3.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882515992314519552/Advancement-Adventure.png")
 
         Farm_page1 = discord.Embed(title="농사(Husbandry)", description="­", color=0xffdc16)
@@ -254,7 +254,7 @@ class minecraft(commands.Cog):
         Farm_page1.add_field(name="균형 잡힌 식단(A Balanced Diet)",value="먹을 수 있는 것이라면 모두 먹으세요,\n그것이 건강에 좋지 않더라도 말이죠.",inline=False)
         Farm_page1.add_field(name="도를 넘은 전념(Serious Dedication)",value="네더라이트 주괴로 괭이를 강화한 후,\n삶의 선택들을 돌이켜보세요",inline=False)
         Farm_page1.add_field(name="이 대신 잇몸으로(Tactical Fishing)",value="물고기를 잡으세요... 낚싯대 없이요!",inline=False)
-        Farm_page1.add_field(name="­",value="📄 1/2 페이지",inline=False)
+        Farm_page1.set_footer(text="📄 1/2 페이지")
         Farm_page1.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882524463193796638/Advancement-Farm.png")
 
         Farm_page2 = discord.Embed(title="농사(Husbandry)", description="­", color=0xffdc16)
@@ -266,7 +266,7 @@ class minecraft(commands.Cog):
         Farm_page2.add_field(name="귀여운 포식자(The Cutest Predator)",value="양동이로 아홀로틀을 잡으세요",inline=False)
         Farm_page2.add_field(name="우정의 치유력(The Healing Power of Friendship!)",value="아홀로틀과 협력해 싸워 이기세요",inline=False)
         Farm_page2.add_field(name="밝은 말 고운 말(Glow and Behold)",value="표지판의 글자가 빛나게 만드세요",inline=False)
-        Farm_page2.add_field(name="­",value="📄 2/2 페이지",inline=False)
+        Farm_page2.add_fieldset_footer(text="📄 2/2 페이지")
         Farm_page2.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882524463193796638/Advancement-Farm.png")
 
         AdV_Mincrft = ["Minecraft","minecraft","MINECRAFT","마인크래프트","마크"]
