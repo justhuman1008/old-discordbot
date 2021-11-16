@@ -14,13 +14,14 @@ Developer Discord: 그저 평범한 인간#8138
 ## 💻셀프 호스팅
 - 프로그래밍에 대해 1도 모르는분인 경우에 보시면 됩니다. 어느정도 안다는 분은 안보시는게..~~안구테러~~ 
 ##### 1.봇 계정 생성
-   - [Discord DEVELOPER PORTAL]](https://discord.com/developers/applications)에 접속해서 로그인합니다.
+   - [Discord DEVELOPER PORTAL](https://discord.com/developers/applications)에 접속해서 로그인합니다.
    - 우측 상단의 `New Application`을 클릭합니다.
    - 봇 계정의 이름을 입력하고 계정을 생성합니다.
    - 좌측의 `Bot`을 클릭하고 `Add Bot`을 클릭해 봇을 생성합니다.
    - `Copy`를 클릭해 봇의 토큰을 복사합니다. 
 ##### 2.봇 초대하기
-      <img src="/Image/client_permissions.PNG" alt ="Data"/> 
+   - 칸 클릭 후
+      <img src="/Image/client_permissions.PNG" alt ="Data"/>  
    - 위와 같이 권한을 설정해주고 초대링크 복사 후 브라우저에 붙여넣기
    - 진행
 ##### 3. [Python](https://www.python.org/)을 다운로드 받습니다.
