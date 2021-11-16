@@ -6,6 +6,7 @@ Bot_Name = "봇 이름"
 Bot_TOKEN="봇 토큰"
 Bot_Image = "봇 프로필 이미지 링크"
 Bot_invite = "봇 초대링크"
+Bot_id = "봇 ID"
 
 Bot_Owner= "봇 소유자 디스코드 ID" #참고: https://vo.la/7D69P
 Owner_Name = "디스코드 닉네임(닉네임#태그)" #본인의 디스코드 닉네임#태그
@@ -15,10 +16,7 @@ Email_Sender="보내는 이메일"
 Sender_PW= "보내는 이메일 비밀번호"
 Receive_Email= "받는 이메일"
 
-Stop_SelfCheck = " 08:10:00"# !일괄진단이 멈추는 시간
 
-if Bot_Image == "봇 프로필 이미지 링크":
-    Bot_Image == "https://discord.com/assets/c09a43a372ba81e3018c3151d4ed4773.png"
 
 
 
