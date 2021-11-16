@@ -2,8 +2,10 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 from discord.utils import *
+from discord.utils import find
 
-
+import setting
+bot_id = setting.Bot_id
 
 class server_utills(commands.Cog):
 
@@ -67,7 +69,15 @@ class server_utills(commands.Cog):
         await ctx.send(embed=guild_info)
         print(f'디스코드 서버 정보를 성공적으로 전송하였습니다.')
 
-
+    @commands.command(aliases=['청소','지워'],usage="!지워 {N}")
+    @commands.has_permissions(manage_messages=True)
+    async def _clear(self, ctx, amount : int):
+        await ctx.channel.purge(limit=1)
+        await ctx.channel.purge(limit=amount)
+        await asyncio.sleep(1)
+        md = await ctx.send(embed=discord.Embed(title=f"메시지 {amount}개를 성공적으로 삭제하였습니다.", color=0xf8e71c))
+        await asyncio.sleep(3)
+        await md.delete()
 
     @commands.command(aliases=['추방', '킥'],usage="!추방 `{멘션}`")
     @commands.has_permissions(kick_members=True)
@@ -170,6 +180,93 @@ class server_utills(commands.Cog):
         await ctx.guild.create_category(name)
         await ctx.send(embed=discord.Embed(title="`"+name+"` 카테고리를 생성하였습니다.", color=0xf8e71c))
         return
+
+    @commands.command(aliases=['뮤트'])
+    @commands.has_permissions(manage_roles=True)
+    async def mute(self, ctx, user : discord.Member,reason=None,*,timelim="NotLim"):
+        mute_role = discord.utils.get(ctx.guild.roles, name = "뮤트")
+        if mute_role == None:
+            await ctx.guild.create_role(name="뮤트")
+            mute_role = discord.utils.get(ctx.guild.roles, name = "뮤트")
+        else:
+            print(" ")
+
+        channels = ctx.guild.channels
+        for channel in channels:
+            await channel.set_permissions(mute_role, send_messages=False)
+
+        if mute_role in user.roles:
+            await ctx.send(embed=discord.Embed(title="해당유저는 이미 뮤트된 상태입니다.", description="뮤트된 유저는 다시 뮤트할 수 없습니다.", color=0xf8e71c))
+            return
+        else:
+            if timelim == "NotLim":
+                await user.add_roles(mute_role)
+                Muted_log = discord.Embed(color=0xf04848)
+                Muted_log.set_author(name=f"[뮤트] {user}", icon_url=user.avatar_url)
+                Muted_log.add_field(name="대상", value=f"{user.mention}", inline=True)
+                Muted_log.add_field(name="실행자", value=f"{ctx.author.mention}", inline=True)
+                if reason != None:
+                    Muted_log.add_field(name="사유", value=f"{reason}", inline=False)
+                await ctx.send(embed=Muted_log)
+                return
+            else:
+                loc_scale = len(timelim)-1
+
+                if timelim[loc_scale:] == "h":
+                    inpnum = timelim.find('h')
+                    timescale = 3600
+                    timename = "시간"
+                elif timelim[loc_scale:] == "m": 
+                    inpnum = timelim.find('m')
+                    timescale = 60
+                    timename = "분"
+                elif timelim[loc_scale:] == "s": 
+                    inpnum = timelim.find('s')
+                    timescale = 1
+                    timename = "초"
+                else:
+                    await ctx.send(embed=discord.Embed(title=f"시간단위를 제대로 작성해주세요", description=f"h(시간) / m(분) / s(초)", color=0xf8e71c))
+                    return
+
+                timenum = timelim[:inpnum]
+                Display_time = timenum+timename
+                await user.add_roles(mute_role)
+
+                Muted_lim = discord.Embed(color=0xf04848)
+                Muted_lim.set_author(name=f"[뮤트] {user}", icon_url=user.avatar_url)
+                Muted_lim.add_field(name="대상", value=f"{user.mention}", inline=True)
+                Muted_lim.add_field(name="실행자", value=f"{ctx.author.mention}", inline=True)
+                Muted_lim.add_field(name="기간", value=f"{Display_time}", inline=True)
+                if reason != None:
+                    Muted_lim.add_field(name="사유", value=f"{reason}", inline=False)
+                await ctx.send(embed=Muted_lim)
+
+                timenum = int(timenum)
+                mutetime = timescale*timenum
+                await asyncio.sleep(mutetime)
+                await user.remove_roles(mute_role)
+
+                unMuted = discord.Embed(color=0x44B37F)
+                unMuted.set_author(name=f"[언뮤트] {user}", icon_url=user.avatar_url)
+                unMuted.add_field(name="대상", value=f"{user.mention}", inline=True)
+                unMuted.add_field(name="실행자", value=f"<@{bot_id}>", inline=True)
+                unMuted.add_field(name="사유", value=f"뮤트 기간 종료", inline=False)
+                await ctx.send(embed=unMuted)
+
+    @commands.command(aliases=['언뮤트'])
+    async def unmute(self, ctx, user : discord.Member,reason=None):
+        role = discord.utils.get(ctx.guild.roles, name = "뮤트")
+        if role in user.roles:
+            await user.remove_roles(role)
+            unMuted = discord.Embed(color=0x44B37F)
+            unMuted.set_author(name=f"[언뮤트] {user}", icon_url=user.avatar_url)
+            unMuted.add_field(name="대상", value=f"{user.mention}", inline=True)
+            unMuted.add_field(name="실행자", value=f"{ctx.author.mention}", inline=True)
+            if reason != None:
+                unMuted.add_field(name="사유", value=f"{reason}", inline=False)
+            await ctx.send(embed=unMuted)
+        else:
+            await ctx.send(embed=discord.Embed(title=f"해당 유저를 언뮤트할 수 없습니다.", description=f"해당 유저는 뮤트된 상태가 아닙니다.", color=0x44B37F))
 
 
 
