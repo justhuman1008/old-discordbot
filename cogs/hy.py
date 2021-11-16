@@ -1,5 +1,6 @@
 import discord #pip
 from discord.ext import commands, tasks
+import asyncio
 
 
 
@@ -15,8 +16,6 @@ class hy(commands.Cog):
     async def _hyhelp(self, ctx):
         embed = discord.Embed(title="해당 명령어는 준비중입니다.", description="`준비중`", color=0xffdc16)
         await ctx.send(embed = embed)
-
-
 
 
 
