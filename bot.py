@@ -95,24 +95,20 @@ async def on_command_error(ctx, error): # 오류처리
         print(f"{error}")
         print("=========================")
 
-@client.event #서버에 초대됨
-async def on_guild_join(server):
-    print(server,"서버에 초대받았습니다!")
-    print ("서버에 참여한 시간 : "+now_kst)
+#@client.event #서버에 초대됨
+#async def on_guild_join(server):
+#    print(server,"서버에 초대받았습니다!")
+#    print ("서버에 참여한 시간 : "+now_kst)
 
-@client.event # 서버에서 추방됨
-async def on_guild_remove(server):
-    print(server,"서버에서 추방되었습니다..")
-    print ("서버에서 추방된 시간 : "+now_kst)
+#@client.event # 서버에서 추방됨
+#async def on_guild_remove(server):
+#    print(server,"서버에서 추방되었습니다..")
+#    print ("서버에서 추방된 시간 : "+now_kst)
 
 
 client.remove_command("help")
 
-@client.command(aliases=['청소', '삭제', '지워'],usage="!청소 {N}")
-@commands.has_permissions(manage_messages=True)
-async def _clear(ctx, amount : int):
-    await ctx.channel.purge(limit=1)
-    await ctx.channel.purge(limit=amount)
+
 
 @client.command(aliases=['hellothisisverification'],usage="개발자확인용")#한국봇리스트 인증용
 async def _checkbotowner(ctx):
