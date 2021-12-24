@@ -12,10 +12,6 @@ Bot_Owner= "봇 소유자 디스코드 ID" #참고: https://vo.la/7D69P
 Owner_Name = "디스코드 닉네임(닉네임#태그)" #본인의 디스코드 닉네임#태그
 
 
-Email_Sender="보내는 이메일"
-Sender_PW= "보내는 이메일 비밀번호"
-Receive_Email= "받는 이메일"
-
 
 
 

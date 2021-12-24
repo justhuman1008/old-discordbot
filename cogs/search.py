@@ -188,28 +188,38 @@ class search(commands.Cog):
 
     @commands.command(name="코로나",ailases=["코로나바이러스", "우한폐렴", "신종코로나", "신종코로나바이러스", "코로나19"]) # Com8
     async def ncov2019(self, ctx):
-        print(f'코로나 현황을 검색하기 위해 사이트에 접속을 시도합니다.')
-        async with aiohttp.ClientSession(trust_env=True) as session:
-            async with session.get(
-                "http://ncov.mohw.go.kr/index_main.jsp"
-            ) as r:
-                soup = BeautifulSoup(await r.text(), "html.parser")
-                boardList = soup.select("ul.liveNum > li > span")
-                newstNews = soup.select(".m_news > ul > li > a")[0]
+        hdr = {'User-Agent': 'Mozilla/5.0'}
+        url = 'http://ncov.mohw.go.kr/index.jsp'
+        req = Request(url, headers=hdr)
+        html = urllib.request.urlopen(req)
+        bsObj = BeautifulSoup(html, "html.parser")
+        print(' -코로나 사이트 접속에 성공하였습니다.')
 
+        vaccinebox = bsObj.find('div', {'class': 'vaccine_list'}) # 백신현황 박스
+        vaccine1 = vaccinebox.select('li', {'class': 'percent'})[1].get_text() #1차 누적
+        vaccine2 = vaccinebox.select('li', {'class': 'percent'})[5].get_text() #2차 누적
 
-        boardList = [x.text for x in boardList]
-        boardList = [item.replace("(누적)", "") for item in boardList]
-        boardList = [item.replace("전일대비", "") for item in boardList]
+        all = bsObj.find('div', {'class': 'occur_num'})
+        dead = all.select('div', {'class': 'box'})[0].get_text() #사망 누적
+        editdead = dead.find("망")+1
+        dead = dead[editdead:]
+        
+        getcovid = all.select('div', {'class': 'box'})[1].get_text() #확진 누적
+        editget1 = getcovid.find("다")
+        editget2 = getcovid.find("진")+1
+        getcovid = getcovid[editget2:editget1]
 
-        embed = discord.Embed(title="코로나-19 국내 현황",description="[예방수칙](http://www.cdc.go.kr/gallery.es?mid=a20503020000&bid=0003)",color=0xD8EF56)
-        embed.add_field(name="확진", value="\n".join(boardList[0:2]))
-        embed.add_field(name="완치", value=" ".join(boardList[2:4]))
-        embed.add_field(name="사망", value=" ".join(boardList[6:8]), inline=True)
-        embed.add_field(name="코로나-19 최신 브리핑",value="[{}](http://ncov.mohw.go.kr{})".format(newstNews.text, newstNews.get("href")),inline=False)
+        covidbox = bsObj.find('table', {'class': 'ds_table'})
+        todaydead = covidbox.select('td')[0].get_text() #일일 사망
+        todayget = covidbox.select('td')[3].get_text() #일일 확진
+
+        embed = discord.Embed(title="코로나-19 국내 현황",description="",color=0xD8EF56)
+        embed.add_field(name="확진", value=f"{getcovid}명(+{todayget})")
+        embed.add_field(name="사망", value=f"{dead}명(+{todaydead})")
+        embed.add_field(name="백신접종 현황", value=f"1차: {vaccine1}\n2차: {vaccine2}")
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/869449509359484991/af275a5f9980be9e.png')
         await ctx.send(embed=embed)
-        print(f'코로나-19 국내 현황 출력 완료')
+        #print(f'코로나-19 국내 현황 출력 완료')
 
 
 

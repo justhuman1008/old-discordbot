@@ -191,6 +191,7 @@ class minecraft(commands.Cog):
         Nether_page3.add_field(name="반짝반짝 눈이 부셔(Oh Shiny)",value="금으로 피글린의 주의를 돌리세요",inline=False)
         Nether_page3.add_field(name="두 발 달린 보트(This Boat Has Legs)",value="뒤틀린 균 낚싯대를 들고 스트라이더 위에 탑승하세요",inline=False)
         Nether_page3.add_field(name="화끈한 관광 명소(Hot Tourist Destinations)",value="모든 네더 생물 군계를 탐험하세요",inline=False)
+        Nether_page3.add_field(name="고향 같은 편안함(Feels Like Home)",value="오버월드의 용암 호수에서 스트라이더를 타고 머어어얼리 이동하세요",inline=False)
         Nether_page3.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882460460962693280/Advancement-Nether.png")
         Nether_page3.set_footer(text="📄 3/3 페이지")
 
@@ -240,6 +241,9 @@ class minecraft(commands.Cog):
         Adventure_page3.add_field(name="새인가?(Is it a Bird?)",value="망원경으로 앵무새를 바라보세요",inline=False)
         Adventure_page3.add_field(name="풍선인가?(Is it a Balloon?)",value="망원경으로 가스트를 바라보세요",inline=False)
         Adventure_page3.add_field(name="비행기인가?(Is it a Plane?)",value="망원경으로 엔더 드래곤을 바라보세요",inline=False)
+        Adventure_page3.add_field(name="최고의 거래(Star Trader)",value="건축 높이 제한에서 주민과 거래하세요",inline=False)
+        Adventure_page3.add_field(name="동굴과 절벽(Caves & Cliffs)",value="세상의 위쪽 끝(건축 제한)에서 아래쪽 끝으로 자유 낙하하고 살아남으세요",inline=False)
+        Adventure_page3.add_field(name="사운드 오브 뮤직(Sound of Music)",value="주크박스로 음악을 틀어 목초지에 활기를 불어넣으세요",inline=False)
         Adventure_page3.set_footer(text="📄 3/3 페이지")
         Adventure_page3.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882515992314519552/Advancement-Adventure.png")
 
@@ -266,7 +270,7 @@ class minecraft(commands.Cog):
         Farm_page2.add_field(name="귀여운 포식자(The Cutest Predator)",value="양동이로 아홀로틀을 잡으세요",inline=False)
         Farm_page2.add_field(name="우정의 치유력(The Healing Power of Friendship!)",value="아홀로틀과 협력해 싸워 이기세요",inline=False)
         Farm_page2.add_field(name="밝은 말 고운 말(Glow and Behold)",value="표지판의 글자가 빛나게 만드세요",inline=False)
-        Farm_page2.add_fieldset_footer(text="📄 2/2 페이지")
+        Farm_page2.set_footer(text="📄 2/2 페이지")
         Farm_page2.set_thumbnail(url="https://cdn.discordapp.com/attachments/731471072310067221/882524463193796638/Advancement-Farm.png")
 
         AdV_Mincrft = ["Minecraft","minecraft","MINECRAFT","마인크래프트","마크"]

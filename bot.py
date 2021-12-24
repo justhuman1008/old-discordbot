@@ -17,6 +17,7 @@ Bot_name = setting.Bot_Name
 Bot_Image = setting.Bot_Image
 Owner_Name = setting.Owner_Name
 Bot_TOKEN = setting.Bot_TOKEN
+Prefix = setting.Bot_Prefix
 
 if Bot_TOKEN == "봇 토큰":
     print("=========================")
@@ -25,7 +26,7 @@ if Bot_TOKEN == "봇 토큰":
     print("=========================")
     sys.exit()
 
-client = commands.Bot(command_prefix = setting.Bot_Prefix)
+client = commands.Bot(command_prefix = Prefix)
 
 
 @client.event # 봇 작동
@@ -118,7 +119,7 @@ async def _checkbotowner(ctx):
 async def help(ctx,commands="No Category"):
 
     #도움말
-    helpem = discord.Embed(title=Bot_name+" 도움말", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
+    helpem = discord.Embed(title=Bot_name+" 도움말", description=f"­봇의 접두사는 `{Prefix}`입니다.", color=0xffdc16)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 서버관리", value="디스코드 서버 관리용 명령어", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 검색", value="검색 명령어 모음", inline=False)
     helpem.add_field(name=':small_blue_diamond:'+"!도움말 마인크래프트", value="마인크래프트 관련 명령어", inline=False)
@@ -132,8 +133,8 @@ async def help(ctx,commands="No Category"):
     serverem = discord.Embed(title="서버 관리용 명령어", description="­", color=0xffdc16)
     serverem.add_field(name=':small_blue_diamond:'+"!서버정보", value="서버에 대한 정보를 출력합니다.", inline=False)
     serverem.add_field(name=':small_blue_diamond:'+"!추방 `{멘션}`", value="멘션한 유저를 추방합니다.", inline=False)
-    serverem.add_field(name=':small_blue_diamond:'+"!차단 `{멘션}`", value="`멘션한 유저를 차단합니다.", inline=False)
-    serverem.add_field(name=':small_blue_diamond:'+"!차단해제 `닉네임#태그`", value="해당 유저를 차단해제합니다.", inline=False)
+    serverem.add_field(name=':small_blue_diamond:'+"!뮤트 `{멘션}` `[사유]` `[기간(s/m/h)]`", value="멘션한 유저를 차단합니다.", inline=False)
+    serverem.add_field(name=':small_blue_diamond:'+"!언뮤트 `{멘션}` `[사유]`", value="해당 유저를 차단해제합니다.", inline=False)
     serverem.add_field(name=':small_blue_diamond:'+"!슬로우모드 `{N}`", value="{N}초 만큼 슬로우모드를 적용합니다.", inline=False)
     serverem.add_field(name=':small_blue_diamond:'+"!청소 `{N}`", value="{N}만큼 메시지를 삭제합니다.", inline=False)
     serverem.add_field(name=':small_blue_diamond:'+"!초대링크 `[N]`", value="서버 초대링크([N]회 제한)를 생성합니다.", inline=False)
@@ -148,7 +149,6 @@ async def help(ctx,commands="No Category"):
     searchem.add_field(name=':small_blue_diamond:'+"!구글 `{내용}`", value="{내용}을 구글에서 검색합니다.", inline=False)
     searchem.add_field(name=':small_blue_diamond:'+"!네이버 `{내용}`", value="{내용}을 네이버에서 검색합니다.", inline=False)
     searchem.add_field(name=':small_blue_diamond:'+"!롤전적 `{닉네임}`", value="{닉네임}의 롤 전적을 불러옵니다.", inline=False)
-    searchem.add_field(name=':small_blue_diamond:'+"!스팀 `{SteamID(17자리 숫자)} or {사용자 지정 URL}`", value="{-}의 스팀 프로필을 불러옵니다.", inline=False)
     searchem.add_field(name=':small_blue_diamond:'+"!코로나", value="국내 코로나-19 현황을 불러옵니다.", inline=False)
     searchem.add_field(name=':small_blue_diamond:'+"!멜론차트", value="멜론차트를 불러옵니다.", inline=False)
     searchem.add_field(name=':small_blue_diamond:'+"!날씨 `{지역}`", value="{지역}의 날씨를 검색합니다.\n타지역 날씨가 뜰 시 지역이 속한 지자체도 같이 입력해주세요.", inline=False)
@@ -233,9 +233,9 @@ async def help(ctx,commands="No Category"):
 @client.command(aliases=['명령어'])
 async def alcommand(ctx,admin="Just Commands"):
     # 일반 커맨드 목록
-    cmdem = discord.Embed(title=Bot_name+" 명령어", description="­봇의 접두사는 `!`입니다.", color=0xffdc16)
-    cmdem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!차단` `!차단해제` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `!음성채널생성` `!카테고리생성`", inline=False)
-    cmdem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적` `!스팀`", inline=False)
+    cmdem = discord.Embed(title=Bot_name+" 명령어", description=f"­봇의 접두사는 `{Prefix}`입니다.", color=0xffdc16)
+    cmdem.add_field(name=':small_blue_diamond:'+"서버관리", value="`!서버정보` `!추방` `!뮤트` `!언뮤트` `!슬로우모드` `!청소` `!초대링크`\n`!역할생성` `!채널생성` `!음성채널생성` `!카테고리생성`", inline=False)
+    cmdem.add_field(name=':small_blue_diamond:'+"검색", value="`!구글` `!네이버` `!코로나` `!멜론차트` `!날씨` `!한강수온` `!인벤뉴스`\n`!롤전적`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"마인크래프트", value="`!마크 구매` `!마크 사양` `!마크 날씨` `!마크 세계` `!마크 색코드`\n`!발전과제` `!UUID` `!스킨` `!하이픽셀`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"놀이", value="`!따라하기` `!소수` `!주사위` `!숫자`", inline=False)
     cmdem.add_field(name=':small_blue_diamond:'+"음성", value="`!참가` `!나가` `!음소거`", inline=False)
@@ -247,7 +247,6 @@ async def alcommand(ctx,admin="Just Commands"):
     admincmd.add_field(name=':small_blue_diamond:'+"!load `{Cog Name}`", value="{Cog}를 로드(가동)합니다.", inline=False)
     admincmd.add_field(name=':small_blue_diamond:'+"!unload `{Cog Name}`", value="{Cog}를 언로드(가동 중지)합니다.", inline=False)
     admincmd.add_field(name=':small_blue_diamond:'+"!reload `{Cog Name}`", value="{Cog}를 리로드(재가동)합니다.", inline=False)
-    admincmd.add_field(name=':small_blue_diamond:'+"!DB저장", value="봇 DB를 관리자 메일로 전송합니다.", inline=False)
     admincmd.add_field(name=':small_blue_diamond:'+"!회원초기화", value="봇 회원 DB를 초기화(전부 제거)합니다.", inline=False)
     admincmd.set_thumbnail(url='https://cdn.discordapp.com/attachments/731471072310067221/777102022771343370/cust.png')
 

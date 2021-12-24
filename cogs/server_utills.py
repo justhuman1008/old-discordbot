@@ -91,35 +91,6 @@ class server_utills(commands.Cog):
         await ctx.channel.send(f"> {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
         print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 추방하였습니다.\n> 사유 : {reason}")
 
-
-    @commands.command(aliases=['차단', '밴'],usage="!차단 `{멘션}`")
-    @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member:discord.User=None, reason =None):
-        if reason == None:
-            reason = "차단사유 미작성됨"
-        if member == None:
-            await ctx.send(embed=discord.Embed(title="추방할 유저를 멘션해주세요", description="!차단 {멘션}", color=0xf8e71c))
-            return
-        await ctx.guild.ban(member, reason=reason)
-        await ctx.channel.send(f"> {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
-        print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 차단하였습니다.\n> 사유 : {reason}")
-
-    @commands.command(aliases=['차단해제', '언밴'],usage="!차단해제 `{닉네임#태그}`") #Com5
-    @commands.has_permissions(administrator=True)
-    async def unban(self, ctx, *, member):
-
-        banned_users = await ctx.guild.bans()
-        member_name, member_discriminator = member.split('#')
-
-        for ban_entry in banned_users:
-            user = ban_entry.user
-
-            if (user.name, user.discriminator) == (member_name, member_discriminator):
-                await ctx.guild.unban(user)
-                await ctx.send(f'> {user.mention}님을 차단해제하였습니다.')
-                print(f"봇이 {ctx.author}님의 명령을 받아 {member.mention}님을 차단해제하였습니다.")
-                return
-
     @commands.command(aliases=['내정보'])
     async def _myinfo(self, ctx):
         user_info = discord.Embed(title=ctx.author.name+"#"+ctx.author.discriminator, colour=0xffdc16)
@@ -134,8 +105,8 @@ class server_utills(commands.Cog):
     @commands.command(aliases=['역할추가', '역할생성'])
     @commands.has_permissions(manage_roles=True)
     async def _create_role(self, ctx, role):
-	    await ctx.guild.create_role(name=role,colour=discord.Colour(0xf8e71c))
-	    await ctx.send(embed=discord.Embed(title=f"역할 `{role}`이(가) 생성되었습니다.", color=0xf8e71c))
+        await ctx.guild.create_role(name=role,colour=discord.Colour(0xf8e71c))
+        await ctx.send(embed=discord.Embed(title=f"역할 `{role}`이(가) 생성되었습니다.", color=0xf8e71c))
 
     @commands.command(aliases=['초대링크', '서버초대'],pass_context=True)
     @commands.has_permissions(create_instant_invite=True)
@@ -185,15 +156,13 @@ class server_utills(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def mute(self, ctx, user : discord.Member,reason=None,*,timelim="NotLim"):
         mute_role = discord.utils.get(ctx.guild.roles, name = "뮤트")
-        if mute_role == None:
+        if mute_role == None: #뮤트역할이 없다면
             await ctx.guild.create_role(name="뮤트")
-            mute_role = discord.utils.get(ctx.guild.roles, name = "뮤트")
-        else:
-            print(" ")
 
-        channels = ctx.guild.channels
-        for channel in channels:
-            await channel.set_permissions(mute_role, send_messages=False)
+            channels = ctx.guild.channels
+            for channel in channels: # 채널 역할 수정
+                await channel.set_permissions(mute_role, send_messages=False)
+            mute_role = discord.utils.get(ctx.guild.roles, name = "뮤트")
 
         if mute_role in user.roles:
             await ctx.send(embed=discord.Embed(title="해당유저는 이미 뮤트된 상태입니다.", description="뮤트된 유저는 다시 뮤트할 수 없습니다.", color=0xf8e71c))
@@ -244,7 +213,6 @@ class server_utills(commands.Cog):
                 timenum = int(timenum)
                 mutetime = timescale*timenum
                 await asyncio.sleep(mutetime)
-                await user.remove_roles(mute_role)
 
                 unMuted = discord.Embed(color=0x44B37F)
                 unMuted.set_author(name=f"[언뮤트] {user}", icon_url=user.avatar_url)
@@ -252,6 +220,7 @@ class server_utills(commands.Cog):
                 unMuted.add_field(name="실행자", value=f"<@{bot_id}>", inline=True)
                 unMuted.add_field(name="사유", value=f"뮤트 기간 종료", inline=False)
                 await ctx.send(embed=unMuted)
+                await user.remove_roles(mute_role)
 
     @commands.command(aliases=['언뮤트'])
     async def unmute(self, ctx, user : discord.Member,reason=None):
