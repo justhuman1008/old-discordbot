@@ -1,9 +1,13 @@
 # 그저 평범한 봇
-[![Send mail](https://img.shields.io/badge/-seanking1008@naver.com-63d863?style=flat-square&logo=gmail&logoColor=white&link=mailto:support@leok.kr)](mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v1.2.1-9ACD32?style=flat-square&logo=pypi&logoColor=white&link=mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v3.x-3776AB?style=flat-square&logo=python&logoColor=white&link=mailto:support@leok.kr)  
-Discord.py를 이용한 잡탕 봇 프로젝트입니다.
+![Badge](https://img.shields.io/badge/-v1.2.1-9ACD32?style=flat-square&logo=pypi&logoColor=white&link=mailto:support@leok.kr)  ![Badge](https://img.shields.io/badge/-v3.x-3776AB?style=flat-square&logo=python&logoColor=white&link=mailto:support@leok.kr)  
+Discord.py를 이용한 잡탕 봇 프로젝트입니다.  
+
+현재 Pycord로 갈아타서 업데이트는 안합니다. 쓰는사람도 없었지만...
+
+Pycord로 만든거 보시려면 [여기로](https://github.com/justhuman1008/JustBot) 가주세요.
 
 Developer Discord: 그저 평범한 인간#8138     
-[개발자 운영버전 봇 초대하기](https://discord.com/oauth2/authorize?client_id=857814380749651998&permissions=534118919671&scope=bot)
+~~개발자 운영버전 봇 초대하기~~
 
 <details><summary>▶️봇 도움말 캡쳐(V1.2)</summary>
 <p>
